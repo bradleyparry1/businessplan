@@ -44,10 +44,11 @@ def authorize
       base_url: OOB_URI)
     #puts "Open the following URL in the browser and enter the " +
     #     "resulting code after authorization"
-    #puts url
+    puts url
     #code = gets
-    code = "4/AACtAxlWR5dskVebdktncNGpTkrz3y9_dGrwc9aZrBhe_VDg-9YLWwU"
-    code = "4/AABTf3uizJu-dAlz8Cbe9baVk7lHCE_WNzyRCMdabmy7AelWmBZOKu4"
+    #code = "4/AACtAxlWR5dskVebdktncNGpTkrz3y9_dGrwc9aZrBhe_VDg-9YLWwU"
+    #code = "4/AABTf3uizJu-dAlz8Cbe9baVk7lHCE_WNzyRCMdabmy7AelWmBZOKu4"
+    code = "4/AACORY4IgFEJ_i1caBDq3DvzkcK7WawpIfP3DJwvqUDAvl9X5NSznIU"
     credentials = authorizer.get_and_store_credentials_from_code(
       user_id: user_id, code: code, base_url: OOB_URI)
   end
