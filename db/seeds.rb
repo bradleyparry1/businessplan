@@ -1,11 +1,5 @@
 =begin
-User.create(name: "Bradley Parry",
-            email: "bradley@example.com",
-            password: "testpass",
-            password_confirmation: "testpass",
-            admin: true,
-            activated: true,
-            activated_at: Time.zone.now)
+User.create!(name: "Bradley Parry", email: "bradley.parry@digital.cabinet-office.gov.uk", password: "testpass", password_confirmation: "testpass", admin: true, activated: true, activated_at: Time.zone.now, user_type: "Master")
 
 5.times do |n|
   name  = Faker::Name.name
@@ -66,155 +60,330 @@ service.authorization = authorize
 
 spreadsheet_id = '1WkzHYNr9XNVW3-2doPoTINCqnhHJEGfW56r21eaGfuE'
 
-Group.delete_all
-Group.reset_pk_sequence
 
-range = 'Groups!A2:C'
-response = service.get_spreadsheet_values(spreadsheet_id, range)
+if ENV["groups"] || ENV["all"]
+  Group.delete_all
+  Group.reset_pk_sequence
 
-puts 'No data found.' if response.values.empty?
-response.values.each do |row|
-  t = Group.new
-  t.name = row[2]
-  t.pcc = row[1]
-  t.save
+  range = 'Groups!A2:C'
+  response = service.get_spreadsheet_values(spreadsheet_id, range)
+
+  puts 'No data found.' if response.values.empty?
+  response.values.each do |row|
+    t = Group.new
+    t.name = row[2]
+    t.pcc = row[1]
+    t.save
+  end
 end
 
-Team.delete_all
-Team.reset_pk_sequence
+if ENV["users"] || ENV["all"]
+  User.delete_all
+  User.reset_pk_sequence
 
-range = 'Teams!A2:E'
-response = service.get_spreadsheet_values(spreadsheet_id, range)
+  range = 'Users!A2:G'
+  response = service.get_spreadsheet_values(spreadsheet_id, range)
 
-puts 'No data found.' if response.values.empty?
-response.values.each do |row|
-  t = Team.new
-  t.name = row[1]
-  t.cc = row[2]
-  t.group_id = row[3]
-  t.programme_id = row[4]
-  t.save
+  puts 'No data found.' if response.values.empty?
+  response.values.each do |row|
+    t = User.new
+    t.name = row[1]
+    t.email = row[2]
+    t.password = row[3]
+    t.password_confirmation = row[3]
+    t.admin = row[4] == "TRUE" ? true : false
+    t.activated  = row[5] == "TRUE" ? true : false
+    t.activated_at = Time.zone.now
+    t.user_type = row[6]
+    t.save
+  end
 end
 
-Programme.delete_all
-Programme.reset_pk_sequence
+if ENV["permissions"] || ENV["all"]
+  Permission.delete_all
+  Permission.reset_pk_sequence
 
-range = 'Programme!A2:B'
-response = service.get_spreadsheet_values(spreadsheet_id, range)
+  range = 'Permissions!A2:C'
+  response = service.get_spreadsheet_values(spreadsheet_id, range)
 
-puts 'No data found.' if response.values.empty?
-response.values.each do |row|
-  t = Programme.new
-  t.name = row[1]
-  t.save
+  puts 'No data found.' if response.values.empty?
+  response.values.each do |row|
+    t = Permission.new
+    t.user_id = row[1]
+    t.group_id = row[2]
+    t.save
+  end
 end
 
-Community.delete_all
-Community.reset_pk_sequence
+if ENV["programmes"] || ENV["all"]
+  Programme.delete_all
+  Programme.reset_pk_sequence
 
-range = 'Community!A2:B'
-response = service.get_spreadsheet_values(spreadsheet_id, range)
+  range = 'Programme!A2:B'
+  response = service.get_spreadsheet_values(spreadsheet_id, range)
 
-puts 'No data found.' if response.values.empty?
-response.values.each do |row|
-  t = Community.new
-  t.name = row[1]
-  t.save
+  puts 'No data found.' if response.values.empty?
+  response.values.each do |row|
+    t = Programme.new
+    t.name = row[1]
+    t.save
+  end
 end
 
-Profession.delete_all
-Profession.reset_pk_sequence
+if ENV["teams"] || ENV["all"]
+  Team.delete_all
+  Team.reset_pk_sequence
 
-range = 'Profession!A2:B'
-response = service.get_spreadsheet_values(spreadsheet_id, range)
+  range = 'Teams!A2:E'
+  response = service.get_spreadsheet_values(spreadsheet_id, range)
 
-puts 'No data found.' if response.values.empty?
-response.values.each do |row|
-  t = Profession.new
-  t.name = row[1]
-  t.save
+  puts 'No data found.' if response.values.empty?
+  response.values.each do |row|
+    t = Team.new
+    t.name = row[1]
+    t.cc = row[2]
+    t.group_id = row[3]
+    t.programme_id = row[4]
+    t.save
+  end
 end
 
-Account.delete_all
-Account.reset_pk_sequence
+if ENV["communities"] || ENV["all"]
+  Community.delete_all
+  Community.reset_pk_sequence
 
-range = 'Account!A2:E'
-response = service.get_spreadsheet_values(spreadsheet_id, range)
+  range = 'Community!A2:B'
+  response = service.get_spreadsheet_values(spreadsheet_id, range)
 
-puts 'No data found.' if response.values.empty?
-response.values.each do |row|
-  t = Account.new
-  t.code = row[1]
-  t.name = row[2]
-  t.major = row[3]
-  t.minor = row[4]
-  t.save
+  puts 'No data found.' if response.values.empty?
+  response.values.each do |row|
+    t = Community.new
+    t.name = row[1]
+    t.save
+  end
 end
 
-Status.delete_all
-Status.reset_pk_sequence
+if ENV["professions"] || ENV["all"]
+  Profession.delete_all
+  Profession.reset_pk_sequence
 
-range = 'Status!A2:B'
-response = service.get_spreadsheet_values(spreadsheet_id, range)
+  range = 'Profession!A2:B'
+  response = service.get_spreadsheet_values(spreadsheet_id, range)
 
-puts 'No data found.' if response.values.empty?
-response.values.each do |row|
-  t = Status.new
-  t.name = row[1]
-  t.save
+  puts 'No data found.' if response.values.empty?
+  response.values.each do |row|
+    t = Profession.new
+    t.name = row[1]
+    t.save
+  end
 end
 
-Grade.delete_all
-Grade.reset_pk_sequence
+if ENV["status"] || ENV["all"]
+  Account.delete_all
+  Account.reset_pk_sequence
 
-range = 'Grade!A2:B'
-response = service.get_spreadsheet_values(spreadsheet_id, range)
+  range = 'Account!A2:E'
+  response = service.get_spreadsheet_values(spreadsheet_id, range)
 
-puts 'No data found.' if response.values.empty?
-response.values.each do |row|
-  t = Grade.new
-  t.name = row[1]
-  t.save
+  puts 'No data found.' if response.values.empty?
+  response.values.each do |row|
+    t = Account.new
+    t.code = row[1]
+    t.name = row[2]
+    t.major = row[3]
+    t.minor = row[4]
+    t.save
+  end
 end
 
-Role.delete_all
-Role.reset_pk_sequence
+if ENV["status"] || ENV["all"]
+  Status.delete_all
+  Status.reset_pk_sequence
 
-range = 'Role!A2:C'
-response = service.get_spreadsheet_values(spreadsheet_id, range)
+  range = 'Status!A2:B'
+  response = service.get_spreadsheet_values(spreadsheet_id, range)
 
-puts 'No data found.' if response.values.empty?
-response.values.each do |row|
-  t = Role.new
-  t.name = row[1]
-  t.account_id = row[2]
-  t.save
+  puts 'No data found.' if response.values.empty?
+  response.values.each do |row|
+    t = Status.new
+    t.name = row[1]
+    t.save
+  end
 end
 
-Framework.delete_all
-Framework.reset_pk_sequence
+if ENV["grades"] || ENV["all"]
+  Grade.delete_all
+  Grade.reset_pk_sequence
 
-range = 'Framework!A2:C'
-response = service.get_spreadsheet_values(spreadsheet_id, range)
+  range = 'Grade!A2:B'
+  response = service.get_spreadsheet_values(spreadsheet_id, range)
 
-puts 'No data found.' if response.values.empty?
-response.values.each do |row|
-  t = Framework.new
-  t.name = row[1]
-  t.save
+  puts 'No data found.' if response.values.empty?
+  response.values.each do |row|
+    t = Grade.new
+    t.name = row[1]
+    t.save
+  end
 end
 
-Rate.delete_all
-Rate.reset_pk_sequence
+if ENV["roles"] || ENV["all"]
+  Role.delete_all
+  Role.reset_pk_sequence
 
-range = 'Rate!A2:D'
-response = service.get_spreadsheet_values(spreadsheet_id, range)
+  range = 'Role!A2:C'
+  response = service.get_spreadsheet_values(spreadsheet_id, range)
 
-puts 'No data found.' if response.values.empty?
-response.values.each do |row|
-  t = Rate.new
-  t.group_id = row[1]
-  t.grade_id = row[2]
-  t.salary = row[3]
-  t.save
+  puts 'No data found.' if response.values.empty?
+  response.values.each do |row|
+    t = Role.new
+    t.name = row[1]
+    t.account_id = row[2]
+    t.save
+  end
+end
+
+if ENV["frameworks"] || ENV["all"]
+  Framework.delete_all
+  Framework.reset_pk_sequence
+
+  range = 'Framework!A2:C'
+  response = service.get_spreadsheet_values(spreadsheet_id, range)
+
+  puts 'No data found.' if response.values.empty?
+  response.values.each do |row|
+    t = Framework.new
+    t.name = row[1]
+    t.save
+  end
+end
+
+if ENV["rates"] || ENV["all"]
+  Rate.delete_all
+  Rate.reset_pk_sequence
+
+  range = 'Rate!A2:D'
+  response = service.get_spreadsheet_values(spreadsheet_id, range)
+
+  puts 'No data found.' if response.values.empty?
+  response.values.each do |row|
+    t = Rate.new
+    t.group_id = row[1]
+    t.grade_id = row[2]
+    t.salary = row[3]
+    t.save
+  end
+end
+
+if ENV["names"] || ENV["all"]
+  Name.delete_all
+  Name.reset_pk_sequence
+
+  range = 'Names!A2:K'
+  response = service.get_spreadsheet_values(spreadsheet_id, range)
+
+
+  puts 'No data found.' if response.values.empty?
+  response.values.each do |row|
+    if Name.exists?(id: row[0])
+      t = Name.find(row[0])
+      t.name = row[1] unless t.name == row[1]
+      t.staff_number = row[2] unless t.staff_number == row[2]
+      t.job_title = row[3] unless t.job_title == row[3]
+      t.role_id = row[4] unless t.role_id == row[4]
+      t.community_id = row[5] unless t.community_id == row[5]
+      t.grade_id = row[6] unless t.grade_id == row[6]
+      t.profession_id = row[7] unless t.profession_id == row[7]
+      t.framework_id = row[8] unless t.framework_id == row[8]
+      t.status_id = row[9] unless t.status_id == row[9]
+      t.charge_rate = row[10] unless t.charge_rate == row[10]
+      t.save
+    else
+      t = Name.new
+      t.name = row[1]
+      t.staff_number = row[2]
+      t.job_title = row[3]
+      t.role_id = row[4]
+      t.community_id = row[5]
+      t.grade_id = row[6]
+      t.profession_id = row[7]
+      t.framework_id = row[8]
+      t.status_id = row[9]
+      t.charge_rate = row[10]
+      t.save
+    end
+  end
+end
+
+if ENV["people"] || ENV["all"]
+  Person.delete_all
+  Person.reset_pk_sequence
+
+  range = 'People!A2:G'
+  response = service.get_spreadsheet_values(spreadsheet_id, range)
+
+  puts 'No data found.' if response.values.empty?
+  response.values.each do |row|
+    t = Person.new
+    t.name_id = row[1]
+    t.team_id = row[2]
+    t.start = row[3] == "" ? nil : Date.parse(row[3])
+    t.end = row[4] == "" ? Date.parse("2019-04-01") : Date.parse(row[4])
+    t.fte = row[5]
+    t.brexit = row[6] == "Yes" ? true : false
+    t.save
+  end
+end
+
+if ENV["others"] || ENV["all"]
+  Other.delete_all
+  Other.reset_pk_sequence
+
+  range = 'Other!A2:R'
+  response = service.get_spreadsheet_values(spreadsheet_id, range)
+
+  puts 'No data found.' if response.values.empty?
+  response.values.each do |row|
+    t = Other.new
+    t.description = row[1]
+    t.team_id = row[2]
+    t.account_id = row[3]
+    t.supplier = row[4]
+    t.po_number = row[5]
+    t.apr = row[6] == nil ? 0.0 : row[6]
+    t.may = row[7] == nil ? 0.0 : row[7]
+    t.jun = row[8] == nil ? 0.0 : row[8]
+    t.jul = row[9] == nil ? 0.0 : row[9]
+    t.aug = row[10] == nil ? 0.0 : row[10]
+    t.sep = row[11] == nil ? 0.0 : row[11]
+    t.oct = row[12] == nil ? 0.0 : row[12]
+    t.nov = row[13] == nil ? 0.0 : row[13]
+    t.dec = row[14] == nil ? 0.0 : row[14]
+    t.jan = row[15] == nil ? 0.0 : row[15]
+    t.feb = row[16] == nil ? 0.0 : row[16]
+    t.mar = row[17] == nil ? 0.0 : row[17]
+    t.save
+  end
+end
+
+if ENV["actuals"] || ENV["all"]
+  Actual.delete_all
+  Actual.reset_pk_sequence
+
+  range = 'Actuals!A2:AK'
+  response = service.get_spreadsheet_values(spreadsheet_id, range)
+
+  months = [9,10,11,0,1,2,3,4,5,6,7,8]
+
+  puts 'No data found.' if response.values.empty?
+  response.values.each do |row|
+    t = Actual.new
+    t.team_id = Team.find_by(cc: row[5]).id unless !Team.find_by(cc: row[5])
+    t.account_id = Account.find_by(code: row[7]).id unless !Account.find_by(code: row[7])
+    t.po_number = row[24]
+    t.description = row[12]
+    t.amount = row[34]
+    t.month = months[Date.parse(row[1]).month]
+    t.save
+  end
+
 end

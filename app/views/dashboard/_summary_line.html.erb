@@ -1,0 +1,15 @@
+<td class="c first_col"><%= outputs[0].round(1) %></td>
+<td class="c w"><%= outputs[1].round(1) %></td>
+<td class="<%= outputs[2] == 0 ? "" : outputs[2] > 0 ? "pos" : "neg" %> c w lr"><%= outputs[2].round(1) %></td>
+<td class="c w"><%= currency(outputs[3]) %></td>
+<td class="c w"><%= currency(outputs[4]) %></td>
+<td class="<%= outputs[5] == 0 ? "" : outputs[5] > 0 ? "pos" : "neg" %> c w lr"><%= currency(outputs[5]) %></td>
+<td class="c w"><%= currency(outputs[6]) %></td>
+<td class="c w"><%= currency(outputs[7]) %></td>
+<td class="<%= outputs[8] == 0 ? "" : outputs[8] > 0 ? "pos" : "neg" %> c w lr"><%= currency(outputs[8]) %></td>
+<td class="c w"><%= currency(outputs[9]) %></td>
+<td class="c w"><%= currency(outputs[10]) %></td>
+<td class="<%= outputs[11] == 0 ? "" : outputs[11] > 0 ? "pos" : "neg" %> c w lr"><%= currency(outputs[11]) %></td>
+<td class="c w" style="<%= sum_style %>"><%= currency(outputs[9] + outputs[6] + outputs[3]) %></td>
+<td class="c w" style="<%= sum_style %>"><%= currency(outputs[10] + outputs[7] + outputs[4]) %></td>
+<td style="<%= sum_style %>" class="<%= (outputs[11] + outputs[8] + outputs[5]) == 0 ? "" : (outputs[11] + outputs[8] + outputs[5]) > 0 ? "pos" : "neg" %> c w lr"><%= currency(outputs[11] + outputs[8] + outputs[5]) %></td>

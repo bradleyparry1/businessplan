@@ -1,19 +1,53 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="container">
-    <%= link_to "sample app", root_path, id: "logo" %>
+    <%= link_to "GDS Business Plan 18/19", '#', id: "logo", style: "padding-top:15px;" %>
     <nav>
       <ul class="nav navbar-nav navbar-right">
-        <li><%= link_to "Home", root_path %></li>
-        <li><%= link_to "Help", help_path %></li>
         <% if logged_in? %>
-          <li><%= link_to "Users", users_path %></li>
+
+          <li><%= link_to "Dashboard", "/dashboard/view" %></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              Account <b class="caret"></b>
+              Central Plan <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "Actuals", "/actuals/view" %></li>
+              <li class="divider"></li>
+              <li><%= link_to "People", "/people" %></li>
+              <li><%= link_to "Other Costs", "/others" %></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <%= "Change Requests" %><b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "Pending Central Approval", "/sandboxes/change" %></li>
+              <li><%= link_to "Pending BOM Approval", "/sandboxes/bmo" %></li>
+              <li class="divider"></li>
+              <li>
+                <%= link_to "Approved", "/sandboxes/approved" %>
+                <%= link_to "Declined", "/sandboxes/declined" %>
+              </li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Sandboxes <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "Summary", "/dashboard/summary" %></li>
+              <li class="divider"></li>
+              <li><%= link_to "People", "/sandboxes/people" %></li>
+              <li><%= link_to "Other Costs", "/sandboxes/other" %></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <%= current_user.name %><b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
               <li><%= link_to "Profile", current_user %></li>
-              <li><%= link_to "Settings", edit_user_path(current_user) %></li>
               <li class="divider"></li>
               <li>
                 <%= link_to "Log out", logout_path, method: :delete %>
@@ -26,4 +60,11 @@
       </ul>
     </nav>
   </div>
+</header>
+<header class='blue_header'>
+  <div class="container">
+    <h1 class='main_title'><%= yield(:title) %></h1>
+    <div style='float:right;height: 89px;'><p id="notice"  style='line-height:89px;'><%= notice %></p></div>
+  </div>
+
 </header>

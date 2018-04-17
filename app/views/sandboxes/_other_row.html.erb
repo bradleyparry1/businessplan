@@ -1,0 +1,105 @@
+  <% code = "GDSO00000" %>
+  <% string_id = id.to_s %>
+  <tr class='<%= row_class %>'>
+    <td class='small_text'><%= id == nil ? "New Line" : code.slice(0,code.length - string_id.length) + string_id %></td>
+    <td><%= other.team.group.name %></td>
+    <td><%= other.team.name %></td>
+    <td><%= other.description %></td>
+    <td><%= other.account.name %></td>
+    <td><%= other.supplier %></td>
+    <td><%= other.po_number %></td>
+    <td class='c'><%= currency(total_year_cost(other)) %></td>
+    <td><input type='button' value='Show Details' id='<%= id %>_new_show' class='show_button'></td>
+    <% if sandbox %>
+      <% if ['Master', 'BMA', 'BMO'].include? type %>
+        <% if change %>
+          <% if other.central_approved || other.central_declined %>
+            <td><%= link_to 'Show', other %></td>
+          <% else %>
+              <td><%= link_to 'Edit Requested Change', edit_ochange_path(id: other.id,
+                                                                         other_id: other.id,
+                                                                         description: other.description,
+                                                                         account_id: other.account_id,
+                                                                         team_id: other.team_id,
+                                                                         supplier: other.supplier,
+                                                                         po_number: other.po_number,
+                                                                         apr: other.apr,
+                                                                         may: other.may,
+                                                                         jun: other.jun,
+                                                                         jul: other.jul,
+                                                                         aug: other.aug,
+                                                                         sep: other.sep,
+                                                                         oct: other.oct,
+                                                                         nov: other.nov,
+                                                                         dec: other.dec,
+                                                                         jan: other.jan,
+                                                                         feb: other.feb,
+                                                                         mar: other.mar) %></td>
+            <% end %>
+          <% else %>
+            <td><%= link_to 'Request Change', new_ochange_path(other_id: other.id,
+                                                               description: other.description,
+                                                               account_id: other.account_id,
+                                                               team_id: other.team_id,
+                                                               supplier: other.supplier,
+                                                               po_number: other.po_number,
+                                                               apr: other.apr,
+                                                               may: other.may,
+                                                               jun: other.jun,
+                                                               jul: other.jul,
+                                                               aug: other.aug,
+                                                               sep: other.sep,
+                                                               oct: other.oct,
+                                                               nov: other.nov,
+                                                               dec: other.dec,
+                                                               jan: other.jan,
+                                                               feb: other.feb,
+                                                               mar: other.mar
+                                                               ) %></td>
+        <% end %>
+      <% end %>
+    <% else %>
+      <td><%= link_to 'Show', other %></td>
+      <% if current_user.user_type == "Master" %>
+        <td><%= link_to 'Edit', edit_other_path(other) %></td>
+        <td><%= link_to 'Destroy', other, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    <% end %>
+  </tr>
+  <tr class='sub_row' id='<%= id %>_new_sub'>
+    <td></td>
+    <td colspan="<%= sandbox ? 10 : 12 %>">
+      <table class='people_details_table' style='width:100%'>
+        <tr class='details_head_row'>
+          <td><b>Month</b></td>
+          <th>Apr 18</th>
+          <th>May 18</th>
+          <th>Jun 18</th>
+          <th>Jul 18</th>
+          <th>Aug 18</th>
+          <th>Sep 18</th>
+          <th>Oct 18</th>
+          <th>Nov 18</th>
+          <th>Dec 18</th>
+          <th>Jan 19</th>
+          <th>Feb 19</th>
+          <th>Mar 19</th>
+        </tr>
+        <tr>
+          <td><b>FTE</b></td>
+          <td><%=currency(other.apr)%></td>
+          <td><%=currency(other.may)%></td>
+          <td><%=currency(other.jun)%></td>
+          <td><%=currency(other.jul)%></td>
+          <td><%=currency(other.aug)%></td>
+          <td><%=currency(other.sep)%></td>
+          <td><%=currency(other.oct)%></td>
+          <td><%=currency(other.nov)%></td>
+          <td><%=currency(other.dec)%></td>
+          <td><%=currency(other.jan)%></td>
+          <td><%=currency(other.feb)%></td>
+          <td><%=currency(other.mar)%></td>
+        </tr>
+      </table>
+    </td>
+  </tr>

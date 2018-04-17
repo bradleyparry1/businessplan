@@ -1,0 +1,23 @@
+<% provide(:title, "People") %>
+
+<p id="notice"><%= notice %></p>
+
+<% type = current_user.user_type %>
+
+<% button = link_to("<input type='button' value='Add New Row' style='float:right;margin-right:10px;'>".html_safe, new_person_path) %>
+
+<% provide(:optional_button, button) %>
+
+<table class='main_table'>
+  <%= render partial: "sandboxes/person_table_header", locals: {sandbox: false}  %>
+
+  <tbody>
+    <% @people.each do |person| %>
+      <%= render partial: "sandboxes/person_row", locals: {person: person, type: type, row_class: "", change: false, id: person.id, sandbox: false} %>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Person', new_person_path %>

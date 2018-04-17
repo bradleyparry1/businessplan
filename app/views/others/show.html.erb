@@ -1,0 +1,37 @@
+<% provide(:title, @other.description) %>
+
+<table>
+  <tr class='current_row'>
+    <td><%= @other.team.group.name %></td>
+    <td><%= @other.team.name %></td>
+    <td><%= @other.description %></td>
+    <td><%= @other.account.name %></td>
+    <td><%= @other.supplier %></td>
+    <td><%= @other.po_number %></td>
+
+    <% @other.versions.reverse.each do |v| %>
+      <% if v.event == "create" %>
+        <td>Created</td>
+        <td><%= v.created_at.to_formatted_s(:long) %></td>
+      <% end %>
+      <% if v.event == "update" %>
+        <td>Updated</td>
+        <td><%= v.created_at.to_formatted_s(:long) %></td>
+      <% end %>
+      </tr>
+      <% if v.event == "update" %>
+        <% ver = v.reify%>
+        <tr>
+          <td><%= ver.description %></td>
+          <td><%= Team.find(ver.team_id).name %></td>
+          <td><%= ver %></td>
+          <td><%= ver %></td>
+          <td><%= ver %></td>
+          <td><%= ver %></td>
+      <% end %>
+    <% end %>
+  </tr>
+</table>
+
+<%= link_to 'Edit', edit_other_path(@other) %> |
+<%= link_to 'Back', others_path %>

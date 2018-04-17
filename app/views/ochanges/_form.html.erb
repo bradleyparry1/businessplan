@@ -1,0 +1,78 @@
+<% type = current_user.user_type %>
+<%= form_with(model: ochange, local: true) do |form| %>
+  <% if ochange.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(ochange.errors.count, "error") %> prohibited this ochange from being saved:</h2>
+      <ul>
+      <% ochange.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.hidden_field :other_id, id: :ochange_other_id %>
+  </div>
+
+  <div class="field">
+    <%= form.hidden_field :user_id, id: :ochange_user_id %>
+  </div>
+
+  <table style='width:100%;'>
+    <% if @ochange.other_id != nil %>
+      <tr><td><label>Request Row Deletion?</label></td><td><%= form.check_box :for_deletion, id: :ochange_for_deletion %></td><td></td></tr>
+    <% else %>
+      <%= form.hidden_field :for_deletion, id: :ochange_for_deletion %>
+    <% end %>
+
+    <tr  style='border: solid black 1px;background-color:#005ea5;color:white;'><td style='width:33%;'>Field</td><td style='width:33%;'>Change Request</td><td style='width:33%;'><%= @ochange.other_id ? 'Original' : ''%></td></tr>
+
+    <% if @ochange.other_id != nil %>
+      <% oth = Other.find(@ochange.other_id) %>
+    <% end %>
+
+    <tr><td><label>Description</label></td><td><%= form.text_field :description, id: :ochange_description %></td><td><%= oth ? oth.description : '' %></td></tr>
+    <tr><td><%= form.label :team_id %></td><td><%= form.select(:team_id, Team.all.collect {|a| [a.name, a.id]}) -%></td><td><%= oth ? Team.find(oth.team_id).name : '' %></td></tr>
+    <tr><td><%= form.label :account_id %></td><td><%= form.select(:account_id, Account.all.sort_by{|e| e[:name]}.collect {|a| [a.name, a.id]}) -%></td><td><%= oth ? oth.account.name : '' %></td></tr>
+
+    <tr><td><label>Supplier</label></td><td><%= form.text_field :supplier, id: :ochange_supplier %></td><td><%= oth ? oth.supplier : '' %></td></tr>
+    <tr><td><label>PO Number</label></td><td><%= form.text_field :po_number, id: :ochange_po_number %></td><td><%= oth ? oth.po_number : '' %></td></tr>
+
+    <tr><td><label>Apr 18 £</label></td><td><%= form.number_field :apr, id: :ochange_apr %></td><td><%= oth ? oth.apr : '' %></td></tr>
+    <tr><td><label>May 18 £</label></td><td><%= form.number_field :may, id: :ochange_apr %></td><td><%= oth ? oth.may : '' %></td></tr>
+    <tr><td><label>Jun 18 £</label></td><td><%= form.number_field :jun, id: :ochange_apr %></td><td><%= oth ? oth.jun : '' %></td></tr>
+    <tr><td><label>Jul 18 £</label></td><td><%= form.number_field :jul, id: :ochange_apr %></td><td><%= oth ? oth.jul : '' %></td></tr>
+    <tr><td><label>Aug 18 £</label></td><td><%= form.number_field :aug, id: :ochange_apr %></td><td><%= oth ? oth.aug : '' %></td></tr>
+    <tr><td><label>Sep 18 £</label></td><td><%= form.number_field :sep, id: :ochange_apr %></td><td><%= oth ? oth.sep : '' %></td></tr>
+    <tr><td><label>Oct 18 £</label></td><td><%= form.number_field :oct, id: :ochange_apr %></td><td><%= oth ? oth.oct : '' %></td></tr>
+    <tr><td><label>Nov 18 £</label></td><td><%= form.number_field :nov, id: :ochange_apr %></td><td><%= oth ? oth.nov : '' %></td></tr>
+    <tr><td><label>Dec 18 £</label></td><td><%= form.number_field :dec, id: :ochange_apr %></td><td><%= oth ? oth.dec : '' %></td></tr>
+    <tr><td><label>Jan 19 £</label></td><td><%= form.number_field :jan, id: :ochange_apr %></td><td><%= oth ? oth.jan : '' %></td></tr>
+    <tr><td><label>Feb 19 £</label></td><td><%= form.number_field :feb, id: :ochange_apr %></td><td><%= oth ? oth.feb : '' %></td></tr>
+    <tr><td><label>Mar 19 £</label></td><td><%= form.number_field :mar, id: :ochange_apr %></td><td><%= oth ? oth.mar : '' %></td></tr>
+    <tr><td><label>Comment</label></td><td colspan='2'><%= form.text_area :comment, id: :ochange_comment, style: "width:100%;" %></td></tr>
+    <tr><td><label>Submitter</label></td><td><%= User.find(@ochange.user_id).name %></td><td></td></tr>
+
+    <% if ['BMO','Master'].include? type %>
+      <tr><td><label>Approved by Business Oothations Manager</label></td><td><%= form.check_box :bmo_approved, id: :ochange_bmo_approved %></td><td></td></tr>
+    <% end %>
+
+    <% if ['Master'].include? type %>
+      <tr><td><label>Approved by Central Team</label></td><td><%= form.check_box :central_approved, id: :ochange_central_approved %></td><td></td></tr>
+      <tr><td><label>Declined by Central Team</label></td><td><%= form.check_box :central_declined, id: :ochange_central_declined %></td><td></td></tr>
+    <% end %>
+
+    <tr><td><label></label></td><td></td><td></td></tr>
+  </table>
+
+  <% if @ochange.other_id != nil %>
+    <div class="actions">
+      <%= form.submit "Submit Change Request"%>
+    </div>
+  <% else %>
+    <div class="actions">
+      <%= form.submit "Submit New Line Request"%>
+    </div>
+  <% end %>
+<% end %>

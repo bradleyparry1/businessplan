@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180311211508) do
+ActiveRecord::Schema.define(version: 20180411203321) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "code"
@@ -19,6 +19,17 @@ ActiveRecord::Schema.define(version: 20180311211508) do
     t.string "minor"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "actuals", force: :cascade do |t|
+    t.integer "team_id"
+    t.integer "account_id"
+    t.text "description"
+    t.float "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "po_number"
+    t.integer "month"
   end
 
   create_table "communities", force: :cascade do |t|
@@ -42,6 +53,108 @@ ActiveRecord::Schema.define(version: 20180311211508) do
   create_table "groups", force: :cascade do |t|
     t.string "name"
     t.string "pcc"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "names", force: :cascade do |t|
+    t.string "name"
+    t.string "staff_number"
+    t.string "job_title"
+    t.integer "role_id"
+    t.integer "community_id"
+    t.integer "grade_id"
+    t.integer "profession_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "framework_id"
+    t.integer "status_id"
+    t.float "charge_rate"
+  end
+
+  create_table "ochanges", force: :cascade do |t|
+    t.string "description"
+    t.integer "team_id"
+    t.integer "account_id"
+    t.string "supplier"
+    t.string "po_number"
+    t.float "apr", default: 0.0
+    t.float "may", default: 0.0
+    t.float "jun", default: 0.0
+    t.float "jul", default: 0.0
+    t.float "aug", default: 0.0
+    t.float "sep", default: 0.0
+    t.float "oct", default: 0.0
+    t.float "nov", default: 0.0
+    t.float "dec", default: 0.0
+    t.float "jan", default: 0.0
+    t.float "feb", default: 0.0
+    t.float "mar", default: 0.0
+    t.integer "other_id"
+    t.boolean "bmo_approved"
+    t.boolean "central_approved"
+    t.boolean "central_declined"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.boolean "for_deletion"
+    t.text "comment"
+  end
+
+  create_table "others", force: :cascade do |t|
+    t.string "description"
+    t.integer "team_id"
+    t.integer "account_id"
+    t.string "supplier"
+    t.string "po_number"
+    t.float "apr", default: 0.0
+    t.float "may", default: 0.0
+    t.float "jun", default: 0.0
+    t.float "jul", default: 0.0
+    t.float "aug", default: 0.0
+    t.float "sep", default: 0.0
+    t.float "oct", default: 0.0
+    t.float "nov", default: 0.0
+    t.float "dec", default: 0.0
+    t.float "jan", default: 0.0
+    t.float "feb", default: 0.0
+    t.float "mar", default: 0.0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "pchanges", force: :cascade do |t|
+    t.integer "person_id"
+    t.integer "team_id"
+    t.date "start"
+    t.date "end"
+    t.float "fte"
+    t.boolean "brexit"
+    t.boolean "bmo_approved"
+    t.boolean "central_approved"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "name_id"
+    t.boolean "for_deletion"
+    t.integer "user_id"
+    t.text "comment"
+    t.boolean "central_declined"
+  end
+
+  create_table "people", force: :cascade do |t|
+    t.integer "name_id"
+    t.integer "team_id"
+    t.date "start"
+    t.date "end"
+    t.float "fte"
+    t.boolean "brexit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "permissions", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -99,6 +212,7 @@ ActiveRecord::Schema.define(version: 20180311211508) do
     t.string "activation_digest"
     t.boolean "activated", default: false
     t.datetime "activated_at"
+    t.string "user_type"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

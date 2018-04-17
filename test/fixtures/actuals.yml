@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  team_id: 1
+  account_id: 1
+  po_number: 1
+  description: MyText
+  amount: 1.5
+
+two:
+  team_id: 1
+  account_id: 1
+  po_number: 1
+  description: MyText
+  amount: 1.5

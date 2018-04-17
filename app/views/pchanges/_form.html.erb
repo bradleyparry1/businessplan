@@ -1,0 +1,69 @@
+<% type = current_user.user_type %>
+<%= form_with(model: pchange, local: true) do |form| %>
+  <% if pchange.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(pchange.errors.count, "error") %> prohibited this pchange from being saved:</h2>
+      <ul>
+      <% pchange.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.hidden_field :person_id, id: :pchange_person_id %>
+  </div>
+
+  <div class="field">
+    <%= form.hidden_field :user_id, id: :pchange_user_id %>
+  </div>
+
+  <table style='width:100%;'>
+    <% if @pchange.person_id != nil %>
+      <tr><td><label>Request Row Deletion?</label></td><td><%= form.check_box :for_deletion, id: :pchange_for_deletion %></td><td></td></tr>
+    <% else %>
+      <%= form.hidden_field :for_deletion, id: :pchange_for_deletion %>
+    <% end %>
+
+    <tr  style='border: solid black 1px;background-color:#005ea5;color:white;'><td style='width:33%;'>Field</td><td style='width:33%;'>Change Request</td><td style='width:33%;'><%= @pchange.person_id ? 'Original' : ''%></td></tr>
+
+    <% if @pchange.person_id == nil %>
+      <tr><td><label>Name</label></td><td><%= form.select(:name_id, Name.all.sort_by{|e| e[:name]}.collect {|a| [a.name, a.id]}) -%></td><td></td></tr>
+    <% else %>
+      <% per = Person.find(@pchange.person_id) %>
+      <% nam = Name.find(@pchange.name_id) %>
+      <tr><td><label>Name</label></td><td><%= nam.name %></td><td><%= nam.name %></td></tr>
+      <%= form.hidden_field :name_id, id: :pchange_name_id %>
+    <% end %>
+
+    <tr><td><%= form.label :team_id %></td><td><%= form.select(:team_id, Team.all.collect {|a| [a.name, a.id]}) -%></td><td><%= per ? Team.find(per.team_id).name : '' %></td></tr>
+    <tr><td><label>Start Date</label></td><td><%= form.date_select :start, id: :pchange_start %></td><td><%= per ? per.start : '' %></td></tr>
+    <tr><td><label>End Date</label></td><td><%= form.date_select :end, id: :pchange_end %></td><td><%= per ? per.end : '' %></td></tr>
+    <tr><td><label>FTE</label></td><td><%= form.number_field :fte, id: :pchange_fte, in: 0.0..1.0, step: 0.1 %></td><td><%= per ? per.fte : '' %></td></tr>
+    <tr><td><label>Brexit role</label></td><td><%= form.check_box :brexit, id: :pchange_brexit %></td><td><%= per ? per.brexit : '' %></td></tr>
+    <tr><td><label>Comment</label></td><td colspan='2'><%= form.text_area :comment, id: :pchange_comment, style: "width:100%;" %></td></tr>
+    <tr><td><label>Submitter</label></td><td><%= User.find(@pchange.user_id).name %></td><td></td></tr>
+
+    <% if ['BMO','Master'].include? type %>
+      <tr><td><label>Approved by Business Operations Manager</label></td><td><%= form.check_box :bmo_approved, id: :pchange_bmo_approved %></td><td></td></tr>
+    <% end %>
+
+    <% if ['Master'].include? type %>
+      <tr><td><label>Approved by Central Team</label></td><td><%= form.check_box :central_approved, id: :pchange_central_approved %></td><td></td></tr>
+      <tr><td><label>Declined by Central Team</label></td><td><%= form.check_box :central_declined, id: :pchange_central_declined %></td><td></td></tr>
+    <% end %>
+
+    <tr><td><label></label></td><td></td><td></td></tr>
+  </table>
+
+  <% if @pchange.person_id != nil %>
+    <div class="actions">
+      <%= form.submit "Submit Change Request"%>
+    </div>
+  <% else %>
+    <div class="actions">
+      <%= form.submit "Submit New Line Request"%>
+    </div>
+  <% end %>
+<% end %>

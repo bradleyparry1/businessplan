@@ -1,0 +1,28 @@
+<% provide(:title, "Other Costs Sandbox") %>
+
+<% type = current_user.user_type %>
+
+<%= render partial: "people_toolbar", locals: {route: "other", search_term: "Description"} %>
+
+<% button = link_to("<input type='button' value='Request New Row' style='float:right;'>".html_safe, new_ochange_path) %>
+
+<% provide(:optional_button, button) %>
+
+<table class='main_table'>
+  <%= render partial: "other_table_header", locals: {sandbox: true}  %>
+  <tbody>
+    <% @new.each do |other| %>
+      <%= render partial: "other_row", locals: {other: other, type: type, row_class: "new_line", change: true, id: nil, sandbox: true} %>
+    <% end %>
+    <% @others.each do |other| %>
+      <% open_change = @changes.find_by(other_id: other.id) %>
+      <% if open_change != nil %>
+        <% other = open_change %>
+        <% row_class = other.for_deletion == true ? "delete_row" : "change_req_row" %>
+        <%= render partial: "other_row", locals: {other: other, type: type, row_class: row_class, change: true, id: other.other_id, sandbox: true} %>
+      <% else %>
+        <%= render partial: "other_row", locals: {other: other, type: type, row_class: "", change: false, id: other.id, sandbox: true} %>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

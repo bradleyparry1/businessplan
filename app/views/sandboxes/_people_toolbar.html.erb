@@ -1,0 +1,11 @@
+<div class='people_toolbar_div'>
+  <%= form_tag("/sandboxes/" + route, method: :get) do |f|%>
+    <label>Search <%=search_term%>:</label>
+    <%= text_field_tag :term, params[:term], style: "width:350px;margin-right:50px;" %>
+    <% groups = current_user.groups.pluck(:id) %>
+    <% teams = Team.where(group_id: groups) %>
+    <label>Select Team:</label>
+    <%= select_tag :team_filter, options_from_collection_for_select(teams,'id','name', params[:team_filter]), include_blank: "All" %>
+    <%= submit_tag 'Filter', style: "width:200px;float:right;" %>
+  <% end %>
+</div>

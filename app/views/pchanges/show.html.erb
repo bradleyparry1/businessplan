@@ -1,0 +1,58 @@
+<% type = current_user.user_type %>
+
+  <table style='width:100%;'>
+    <% if @pchange.person_id != nil %>
+      <tr><td><label>Request Row Deletion?</label></td><td><%= @pchange.for_deletion %></td><td></td></tr>
+    <% end %>
+
+    <tr  style='border: solid black 1px;background-color:#005ea5;color:white;'><td style='width:33%;'>Field</td><td style='width:33%;'>Change Request</td><td style='width:33%;'><%= @pchange.person_id ? 'Original' : ''%></td></tr>
+
+    <% if @pchange.person_id == nil %>
+      <% provide(:title, "New Line Request") %>
+      <tr><td><label>Name</label></td><td><%= @pchange.name.name %></td><td></td></tr>
+    <% else %>
+      <% provide(:title, "Change Request") %>
+      <% per = Person.find(@pchange.person_id) %>
+      <% nam = Name.find(@pchange.name_id) %>
+      <tr><td><label>Name</label></td><td><%= nam.name %></td><td><%= nam.name %></td></tr>
+    <% end %>
+
+    <tr><td><label>Team</label></td><td><%= Team.find(@pchange.team_id).name %></td><td><%= per ? Team.find(per.team_id).name : '' %></td></tr>
+    <tr><td><label>Start Date</label></td><td><%= @pchange.start.strftime("%m/%d/%Y") %></td><td><%= per ? per.start.strftime("%m/%d/%Y") : '' %></td></tr>
+    <tr><td><label>End Date</label></td><td><%= @pchange.end.strftime("%m/%d/%Y") %></td><td><%= per ? per.end.strftime("%m/%d/%Y") : '' %></td></tr>
+    <tr><td><label>FTE</label></td><td><%= @pchange.fte %></td><td><%= per ? per.fte : '' %></td></tr>
+    <tr><td><label>Brexit role</label></td><td><%= @pchange.brexit %></td><td><%= per ? per.brexit : '' %></td></tr>
+
+    <% rate = get_rate(@pchange.name,@pchange.team) %>
+    <% ftes = get_all_fte(@pchange.start,@pchange.end,@pchange.fte) %>
+    <% costs = get_all_costs(rate,ftes,@pchange.fte)%>
+
+    <% if per %>
+      <% per_rate = get_rate(per.name,per.team) %>
+      <% per_ftes = get_all_fte(per.start,per.end,per.fte) %>
+      <% per_costs = get_all_costs(per_rate,per_ftes,per.fte)%>
+    <% end %>
+
+    <tr><td><label>Total 18/19 FTE</label></td><td><%= ftes.inject(0){|sum,x| sum + x } %></td><td><%= per ? per_ftes.inject(0){|sum,x| sum + x } : '' %></td></tr>
+    <tr><td><label>Total 18/19 Cost</label></td><td><%= currency(costs.inject(0){|sum,x| sum + x }) %></td><td><%= per ? currency(per_costs.inject(0){|sum,x| sum + x }) : '' %></td></tr>
+
+    <tr><td><label>Comment</label></td><td colspan='2' style='border: solid black 1px;'><%= @pchange.comment %></td><td></td></tr>
+
+    <tr><td><label>Submitter</label></td><td><%= User.find(@pchange.user_id).name %></td><td></td></tr>
+
+    <% if ['BMO','Master'].include? type %>
+      <tr><td><label>Approved by Business Operations Manager</label></td><td><%= @pchange.bmo_approved %></td><td></td></tr>
+    <% end %>
+
+    <% if ['Master'].include? type %>
+      <tr><td><label>Approved by Central Team</label></td><td><%= @pchange.central_approved %></td><td></td></tr>
+      <tr><td><label>Approved by Central Team</label></td><td><%= @pchange.central_declined %></td><td></td></tr>
+    <% end %>
+
+    <tr><td><label></label></td><td></td><td></td></tr>
+  </table>
+
+<% if !@pchange.central_approved && !@pchange.central_declined %>
+  <%= link_to 'Edit', edit_pchange_path(@pchange) %> |
+<% end %>
+<%= link_to 'Back', session.delete(:return_to) %>

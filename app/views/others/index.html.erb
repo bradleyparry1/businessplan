@@ -1,0 +1,21 @@
+<% provide(:title, "Other Costs") %>
+
+<% type = current_user.user_type %>
+
+<% button = link_to("<input type='button' value='Add New Row' style='float:right;margin-right:10px;'>".html_safe, new_other_path) %>
+
+<% provide(:optional_button, button) %>
+
+<table class='main_table'>
+  <%= render partial: "sandboxes/other_table_header", locals: {sandbox: false} %>
+
+  <tbody>
+    <% @others.each do |other| %>
+      <%= render partial: "sandboxes/other_row", locals: {other: other, type: type, row_class: "", change: false, id: other.id, sandbox: false} %>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Other Cost', new_other_path %>

@@ -1,0 +1,54 @@
+
+<% provide(:title, "Summary") %>
+<% @change_ids = Pchange.where(central_approved: false, central_declined: false).pluck(:person_id) %>
+<% @ochange_ids = Ochange.where(central_approved: false, central_declined: false).pluck(:other_id) %>
+<% @inc_ids = Account.where('name LIKE ?', "%INC%").pluck(:id) %>
+<div id="table_window">
+  <table style='border-top: solid black 1px;border-bottom: solid black 1px; width:3500px;'>
+    <tr style='border-bottom: solid black 1px;background-color:#005ea5;color:white;'>
+      <th style='background-color:#005ea5;height:46px;' class="frozen">Group</th>
+      <th style='background-color:#005ea5;height:46px;' class="frozen_2">Team</th>
+      <th class='c first_col'>Mar 19 FTE (Central)</th>
+      <th class='c w'>Mar 19 FTE (Sandbox)</th>
+      <th class='c w lr'>FTE Difference</th>
+      <th class='c w'>18/19 People Costs (Central)</th>
+      <th class='c w'>18/19 People Costs (Sandbox)</th>
+      <th class='c w' style='width:120px;'>People Cost Difference</th>
+      <th class='c w'>18/19 Other Costs (Central)</th>
+      <th class='c w'>18/19 Other Costs (Sandbox)</th>
+      <th class='c w lr' style='width:120px;'>Other Costs Difference</th>
+      <th class='c w'>18/19 Income (Central)</th>
+      <th class='c w'>18/19 Income (Sandbox)</th>
+      <th class='c w lr' style='width:120px;'>Income Difference</th>
+      <th class='c w'>18/19 Total Spend (Central)</th>
+      <th class='c w'>18/19 Total Spend (Sandbox)</th>
+      <th class='c w' style='width:120px;border-left:black solid 1px;'> Total Difference</th>
+    </tr>
+    <% total_outputs = [0,0,0,0,0,0,0,0,0,0,0,0] %>
+    <% current_user.groups.each do |g| %>
+      <% group_outputs = [0,0,0,0,0,0,0,0,0,0,0,0] %>
+      <% g.teams.each do |t| %>
+        <% outputs = get_all_outputs(t,@change_ids,@ochange_ids,@inc_ids) %>
+        <% outputs.each_with_index do |t,i| %>
+          <% group_outputs[i] += t %>
+          <% total_outputs[i] += t %>
+        <% end %>
+        <tr>
+          <td class='small_text frozen'><%= t.group.name %></td>
+          <td class='small_text frozen_2'  style='background-color: white;'><%= t.name %></td>
+          <%= render partial: "summary_line", locals: {outputs: outputs, sum_style: "background-color:#f3f3f3;"} %>
+        </tr>
+      <% end %>
+      <tr class='sub_total'>
+        <td class="frozen"><%= g.name %></td>
+        <td class="frozen_2" style='background-color: #efefef;color:#efefef; font-weight:bold;'>blank</td>
+        <%= render partial: "summary_line", locals: {outputs: group_outputs, sum_style: ""} %>
+      </tr>
+    <% end %>
+    <tr class='sub_total'>
+      <td class="frozen">GDS</td>
+      <td class="frozen_2" style='background-color: #efefef;color:#efefef; font-weight:bold;'>blank</td>
+      <%= render partial: "summary_line", locals: {outputs: total_outputs, sum_style: ""} %>
+    </tr>
+  </table>
+</div>

@@ -1,0 +1,17 @@
+<% provide :title, "Actuals" %>
+
+<% months = ["Apr 18","May 18","Jun 18","Jul 18","Aug 18","Sep 18","Oct 18","Nov 18","Dec 18","Jan 19","Feb 19","Mar 19"] %>
+
+<table class='main_table'>
+<% @actuals.each do |a| %>
+  <tr>
+    <td><%= a.team ? a.team.group.name : "" %></td>
+    <td><%= a.team ? a.team.name : "" %></td>
+    <td><%= months[a.month] %></td>
+    <td><%= a.po_number %></td>
+    <td><%= a.description %></td>
+
+    <td><%= currency(a.amount) %></td>
+  </tr>
+<% end %>
+</table>

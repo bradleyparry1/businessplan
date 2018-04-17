@@ -1,0 +1,87 @@
+  <% name = Name.find(person.name_id) %>
+  <% team = Team.find(person.team_id) %>
+  <% role = Role.find(name.role_id).name %>
+  <% monthly_rate = get_rate(name,team) %>
+  <% ftes = get_all_fte(person.start,person.end,person.fte) %>
+  <% indv_fte = Float(person.fte) %>
+  <% costs = get_all_costs(monthly_rate,ftes,indv_fte) %>
+  <% code = "GDSP00000" %>
+  <% string_id = id.to_s %>
+  <tr class='<%= row_class %>'>
+    <td class='small_text'><%= id == nil ? "New Line" : code.slice(0,code.length - string_id.length) + string_id %></td>
+    <td><%= team.group.name %></td>
+    <td><%= team.name %></td>
+    <td><%= name.name %></td>
+    <td class='c'><%= role %></td>
+    <td class='c'><%= person.start ? person.start.strftime("%m/%d/%Y") : ''%></td>
+    <td class='c'><%= person.end.strftime("%m/%d/%Y") %></td>
+    <td class='c'><%= person.fte %></td>
+    <td class='c'><%= currency(costs.inject(0){|sum,x| sum + x }) %></td>
+    <td><input type='button' value='Show Details' id='<%= id %>_new_show' class='show_button'></td>
+    <% if sandbox %>
+      <% if ['Master', 'BMA', 'BMO'].include? type %>
+        <% if change %>
+          <% if person.central_approved || person.central_declined %>
+            <td><%= link_to 'Show', person %></td>
+          <% else %>
+              <td><%= link_to 'Edit Requested Change', edit_pchange_path(id: person.id,
+                                                                         person_id: person.person_id,
+                                                                         name_id: person.name_id,
+                                                                         team_id: person.team_id,
+                                                                         start: person.start,
+                                                                         end: person.end,
+                                                                         fte: person.fte,
+                                                                         brexit: person.brexit) %></td>
+            <% end %>
+          <% else %>
+            <td><%= link_to 'Request Change', new_pchange_path(person_id: person.id,
+                                                               name_id: person.name_id,
+                                                               team_id: person.team_id,
+                                                               start: person.start,
+                                                               end: person.end,
+                                                               fte: person.fte,
+                                                               brexit: person.brexit) %></td>
+        <% end %>
+      <% end %>
+    <% else %>
+      <td><%= link_to 'Show', person %></td>
+      <% if current_user.user_type == "Master" %>
+        <td><%= link_to 'Edit', edit_person_path(person) %></td>
+        <td><%= link_to 'Destroy', person, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    <% end %>
+  </tr>
+  <tr class='sub_row' id='<%= id %>_new_sub'>
+    <td></td>
+    <td colspan="<%= sandbox ? 10 : 12 %>">
+      <table class='people_details_table' style='width:100%'>
+        <tr class='details_head_row'>
+          <td><b>Month</b></td>
+          <th>Apr 18</th>
+          <th>May 18</th>
+          <th>Jun 18</th>
+          <th>Jul 18</th>
+          <th>Aug 18</th>
+          <th>Sep 18</th>
+          <th>Oct 18</th>
+          <th>Nov 18</th>
+          <th>Dec 18</th>
+          <th>Jan 19</th>
+          <th>Feb 19</th>
+          <th>Mar 19</th>
+        </tr>
+        <tr>
+          <td><b>FTE</b></td>
+          <% ftes.each do |fte| %>
+            <td class='c'><%= '%.2f' % fte %></td>
+          <% end %>
+        </tr>
+        <tr>
+          <td><b>Cost</b></td>
+          <% costs.each do |cost| %>
+            <td class='c'><%= currency(cost) %></td>
+          <% end %>
+        </tr>
+      </table>
+    </td>
+  </tr>

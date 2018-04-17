@@ -1,0 +1,31 @@
+<% type = current_user.user_type %>
+
+<% if pnew.length == 0 %>
+  <h2>There are currently no people changes to review.</h2>
+<% else %>
+  <h1>People Changes</h1>
+  <table class='main_table'>
+    <%= render partial: "person_table_header", locals: {sandbox: false} %>
+    <tbody>
+      <% pnew.each do |person|%>
+          <% row_class = person.for_deletion == true ? "delete_row" : person.person_id ? "change_req_row" : "new_line" %>
+          <%= render partial: "person_row", locals: {person: person, type: type, row_class: row_class, change: true, id: person.person_id, sandbox: true} %>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<% if onew.length == 0 %>
+  <h2>There are currently no other cost changes to review.</h2>
+<% else %>
+  <h1>Other Cost Changes</h1>
+  <table class='main_table'>
+    <%= render partial: "other_table_header", locals: {sandbox: false} %>
+    <tbody>
+      <% onew.each do |other|%>
+          <% row_class = other.for_deletion == true ? "delete_row" : other.other_id ? "change_req_row" : "new_line" %>
+          <%= render partial: "other_row", locals: {other: other, type: type, row_class: row_class, change: true, id: other.other_id, sandbox: true} %>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

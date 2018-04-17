@@ -1,0 +1,20 @@
+
+<% provide(:title, "Dashboard") %>
+
+
+
+<select id='group_select'>
+  <option value='All'>All</option>
+  <% Group.all.each do |group| %>
+   <option value='<%= group.name %>'><%= group.name %></option>
+  <% end %>
+</select>
+
+<select id='team_select'>
+  <option value='All'>All</option>
+  <% Team.all.each do |team| %>
+   <option value='<%= team.name %>'><%= team.name %></option>
+  <% end %>
+</select>
+
+<%= get_actuals_totals(@actuals) %>

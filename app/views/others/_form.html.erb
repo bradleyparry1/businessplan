@@ -1,0 +1,102 @@
+<%= form_with(model: other, local: true) do |form| %>
+  <% if other.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(other.errors.count, "error") %> prohibited this other from being saved:</h2>
+
+      <ul>
+      <% other.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_field :description, id: :other_description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :team_id %>
+    <%= form.number_field :team_id, id: :other_team_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :account_id %>
+    <%= form.number_field :account_id, id: :other_account_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :supplier %>
+    <%= form.text_field :supplier, id: :other_supplier %>
+  </div>
+
+  <div class="field">
+    <%= form.label :po_number %>
+    <%= form.text_field :po_number, id: :other_po_number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :apr %>
+    <%= form.text_field :apr, id: :other_apr %>
+  </div>
+
+  <div class="field">
+    <%= form.label :may %>
+    <%= form.text_field :may, id: :other_may %>
+  </div>
+
+  <div class="field">
+    <%= form.label :jun %>
+    <%= form.text_field :jun, id: :other_jun %>
+  </div>
+
+  <div class="field">
+    <%= form.label :jul %>
+    <%= form.text_field :jul, id: :other_jul %>
+  </div>
+
+  <div class="field">
+    <%= form.label :aug %>
+    <%= form.text_field :aug, id: :other_aug %>
+  </div>
+
+  <div class="field">
+    <%= form.label :sep %>
+    <%= form.text_field :sep, id: :other_sep %>
+  </div>
+
+  <div class="field">
+    <%= form.label :oct %>
+    <%= form.text_field :oct, id: :other_oct %>
+  </div>
+
+  <div class="field">
+    <%= form.label :nov %>
+    <%= form.text_field :nov, id: :other_nov %>
+  </div>
+
+  <div class="field">
+    <%= form.label :dec %>
+    <%= form.text_field :dec, id: :other_dec %>
+  </div>
+
+  <div class="field">
+    <%= form.label :jan %>
+    <%= form.text_field :jan, id: :other_jan %>
+  </div>
+
+  <div class="field">
+    <%= form.label :feb %>
+    <%= form.text_field :feb, id: :other_feb %>
+  </div>
+
+  <div class="field">
+    <%= form.label :mar %>
+    <%= form.text_field :mar, id: :other_mar %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
