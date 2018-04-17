@@ -42,9 +42,9 @@ def authorize
   if credentials.nil?
     url = authorizer.get_authorization_url(
       base_url: OOB_URI)
-    puts "Open the following URL in the browser and enter the " +
-         "resulting code after authorization"
-    puts url
+    #puts "Open the following URL in the browser and enter the " +
+    #     "resulting code after authorization"
+    #puts url
     #code = gets
     code = "4/AACtAxlWR5dskVebdktncNGpTkrz3y9_dGrwc9aZrBhe_VDg-9YLWwU"
     code = "4/AABTf3uizJu-dAlz8Cbe9baVk7lHCE_WNzyRCMdabmy7AelWmBZOKu4"
