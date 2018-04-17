@@ -47,7 +47,7 @@ def authorize
     #puts url
     #code = gets
     code = "4/AACtAxlWR5dskVebdktncNGpTkrz3y9_dGrwc9aZrBhe_VDg-9YLWwU"
-    code = "4/AABTf3uizJu-dAlz8Cbe9baVk7lHCE_WNzyRCMdabmy7AelWmBZOKu4"
+    code = "4/AACDhEoQK_Gof-Hlbw08ZTDigPZhPy2JAy3TFKUCZ48F_XkLU_mqF1o"
     credentials = authorizer.get_and_store_credentials_from_code(
       user_id: user_id, code: code, base_url: OOB_URI)
   end
