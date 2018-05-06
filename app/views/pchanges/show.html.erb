@@ -1,6 +1,6 @@
 <% type = current_user.user_type %>
 
-  <table style='width:100%;'>
+  <table style='width:100%;margin-top:10px;'>
     <% if @pchange.person_id != nil %>
       <tr><td><label>Request Row Deletion?</label></td><td><%= @pchange.for_deletion %></td><td></td></tr>
     <% end %>

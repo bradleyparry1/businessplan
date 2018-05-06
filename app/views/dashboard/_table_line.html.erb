@@ -1,0 +1,13 @@
+<tr class='<%= row_style %>'>
+  <td style="text-align:left;border-right:solid black 1px;"><b><%= title %></b></td>
+  <% total = 0 %>
+  <% array.each_with_index do |v,i| %>
+    <% total += v %>
+    <% input = cum ? total : v %>
+    <% td_class = row_style == "total_row" ? "" : variance ? "variance_td" : actual_months != nil ? i > @actual_months ? "forecast_td" : "actual_td" : "baseline_td" %>
+    <% color = input >= 0 ? "black" : "red" %>
+    <td class='<%= td_class %>' style='color:<%= color %>'><%= currency(input / 1000) + "k" %></td>
+  <% end %>
+  <% color = total >= 0 ? "black" : "red" %>
+  <td style='color:<%= color %>;text-align:center;border-left:solid black 1px;background-color: #efefef;'><b><%= currency(total / 1000) + "k" %></b></td>
+</tr>

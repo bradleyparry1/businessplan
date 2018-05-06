@@ -1,20 +1,49 @@
-
 <% provide(:title, "Dashboard") %>
 
 
 
-<select id='group_select'>
-  <option value='All'>All</option>
-  <% Group.all.each do |group| %>
-   <option value='<%= group.name %>'><%= group.name %></option>
+<div class='people_toolbar_div'>
+  <%= form_tag("/dashboard/view", method: :get) do |f|%>
+    <% group_ids = current_user.groups.pluck(:id) %>
+    <% groups = Group.find(group_ids) %>
+    <label>Select Group:</label>
+    <%= select_tag :group_filter, options_from_collection_for_select(groups,'id','name', params[:group_filter]), include_blank: "All", id: "group_select" %>
+    <% teams = Team.where(group_id: group_ids) %>
+    <label>Select Team:</label>
+    <%= select_tag :team_filter, options_from_collection_for_select(teams,'id','name', params[:team_filter]), include_blank: "All", id: "team_select" %>
+    <label>Cumulative:</label>
+    <%= select_tag :cum_filter, options_for_select([ "Yes", "No" ], params[:cum_filter]) %>
+    <label>Forecast:</label>
+    <%= select_tag :fore, options_for_select([ "Central Plan", "Sandbox" ], params[:fore]) %>
+    <%= submit_tag 'Filter', style: "width:200px;float:right;" %>
   <% end %>
-</select>
+</div>
 
-<select id='team_select'>
-  <option value='All'>All</option>
-  <% Team.all.each do |team| %>
-   <option value='<%= team.name %>'><%= team.name %></option>
-  <% end %>
-</select>
+<%= area_chart @graph_data, stacked: false %>
 
-<%= get_actuals_totals(@actuals) %>
+<table class='main_table' style='border: solid black 1px;'>
+  <%= render partial: "table_top_line", locals: {title: "Forecast"} %>
+  <%= render partial: "table_line", locals: {title: "CSs", array: @cs_row, actual_months: @actual_months, variance: false, row_style: "", cum: @cumulative} %>
+  <%= render partial: "table_line", locals: {title: "Interims", array: @interims_row, actual_months: @actual_months, variance: false, row_style: "", cum: @cumulative} %>
+  <%= render partial: "table_line", locals: {title: "Other Costs", array: @other_row, actual_months: @actual_months, variance: false, row_style: "", cum: @cumulative} %>
+  <%= render partial: "table_line", locals: {title: "Income", array: @income_row, actual_months: @actual_months, variance: false, row_style: "", cum: @cumulative} %>
+  <%= render partial: "table_line", locals: {title: "Total", array: @total_row, actual_months: @actual_months, variance: false, row_style: "total_row", cum: @cumulative} %>
+</table>
+
+<table class='main_table' style='border: solid black 1px;'>
+  <%= render partial: "table_top_line", locals: {title: "Baseline"} %>
+  <%= render partial: "table_line", locals: {title: "CSs", array: @cs_baseline, actual_months: nil, variance: false, row_style: "", cum: @cumulative} %>
+  <%= render partial: "table_line", locals: {title: "Interims", array: @interims_baseline, actual_months: nil, variance: false, row_style: "", cum: @cumulative} %>
+  <%= render partial: "table_line", locals: {title: "Other Costs", array: @other_baseline, actual_months: nil, variance: false, row_style: "", cum: @cumulative} %>
+  <%= render partial: "table_line", locals: {title: "Income", array: @income_baseline, actual_months: nil, variance: false, row_style: "", cum: @cumulative} %>
+  <%= render partial: "table_line", locals: {title: "Total", array: @baseline_total_row, actual_months: nil, variance: false, row_style: "total_row", cum: @cumulative} %>
+</table>
+
+<table class='main_table' style='border: solid black 1px;'>
+  <%= render partial: "table_top_line", locals: {title: "Variance"} %>
+  <%= render partial: "table_line", locals: {title: "CSs", array: @cs_variance, actual_months: nil, variance: true, row_style: "", cum: @cumulative} %>
+  <%= render partial: "table_line", locals: {title: "Interims", array: @interims_variance, actual_months: nil, variance: true, row_style: "", cum: @cumulative} %>
+  <%= render partial: "table_line", locals: {title: "Other Costs", array: @other_variance, actual_months: nil, variance: true, row_style: "", cum: @cumulative} %>
+  <%= render partial: "table_line", locals: {title: "Income", array: @income_variance, actual_months: nil, variance: true, row_style: "", cum: @cumulative} %>
+  <%= render partial: "table_line", locals: {title: "Total", array: @variance_total_row, actual_months: nil, variance: true, row_style: "total_row", cum: @cumulative} %>
+</table>

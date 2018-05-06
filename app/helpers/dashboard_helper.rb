@@ -72,7 +72,7 @@ module DashboardHelper
 
     team_changes.each do |c|
       if sandbox && c.for_deletion != true && c.central_approved != true && c.central_declined != true
-        rate = get_rate(Name.find(c.name_id),Team.find(c.team_id))
+        rate = get_rate(c.name,c.team)
         ftes = get_all_fte(c.start,c.end,c.fte)
         total += ftes[-1]
       end
@@ -80,7 +80,7 @@ module DashboardHelper
 
     people.each do |p|
       if !change_ids.include?(p.id) || !sandbox
-        rate = get_rate(Name.find(p.name_id),Team.find(p.team_id))
+        rate = get_rate(p.name,p.team)
         ftes = get_all_fte(p.start,p.end,p.fte)
         total += ftes[-1]
       end
@@ -101,11 +101,35 @@ module DashboardHelper
   end
 
   def get_actuals_totals(actuals)
-    actuals_totals = [0,0,0,0,0,0,0,0,0,0,0,0]
+    actuals_totals = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
     actuals.each do |a|
       actuals_totals[a.month] += a.amount
     end
     return actuals_totals
+  end
+
+  def get_people_month_costs(people)
+    people_totals = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+    people.each do |p|
+      rate = get_rate(p.name,p.team)
+      ftes = get_all_fte(p.start,p.end,p.fte)
+      all_costs = get_all_costs(rate,ftes,p.fte)
+      all_costs.each_with_index do |a,i|
+        people_totals[i] += a
+      end
+    end
+    return people_totals
+  end
+
+  def get_other_month_costs(others)
+    other_totals = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+    others.each do |o|
+      all_costs = other_month_costs(o)
+      all_costs.each_with_index do |a,i|
+        other_totals[i] += a unless !a
+      end
+    end
+    return other_totals
   end
 
 end

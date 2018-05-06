@@ -1,6 +1,6 @@
-  <% name = Name.find(person.name_id) %>
-  <% team = Team.find(person.team_id) %>
-  <% role = Role.find(name.role_id).name %>
+  <% name = person.name %>
+  <% team = person.team %>
+  <% role = name.role.name %>
   <% monthly_rate = get_rate(name,team) %>
   <% ftes = get_all_fte(person.start,person.end,person.fte) %>
   <% indv_fte = Float(person.fte) %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180411203321) do
+ActiveRecord::Schema.define(version: 20180428202322) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "code"
@@ -30,6 +30,39 @@ ActiveRecord::Schema.define(version: 20180411203321) do
     t.datetime "updated_at", null: false
     t.string "po_number"
     t.integer "month"
+  end
+
+  create_table "base_others", force: :cascade do |t|
+    t.string "description"
+    t.integer "team_id"
+    t.integer "account_id"
+    t.string "supplier"
+    t.string "po_number"
+    t.float "apr"
+    t.float "may"
+    t.float "jun"
+    t.float "jul"
+    t.float "aug"
+    t.float "sep"
+    t.float "oct"
+    t.float "nov"
+    t.float "dec"
+    t.float "jan"
+    t.float "feb"
+    t.float "mar"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "base_people", force: :cascade do |t|
+    t.integer "name_id"
+    t.integer "team_id"
+    t.date "start"
+    t.date "end"
+    t.float "fte"
+    t.boolean "brexit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "communities", force: :cascade do |t|

@@ -23,12 +23,12 @@
 
   <div class="field">
     <%= form.label :start %>
-    <%= form.date_select :start, id: :person_start %>
+    <%= form.date_field :start, id: :person_start, :value => Date.today, min: Date.parse("2018-04-01"), max: Date.parse("2019-04-01") %>
   </div>
 
   <div class="field">
     <%= form.label :end %>
-    <%= form.date_select :end, id: :person_end, :value => Date.new(2019,4,1) %>
+    <%= form.date_field :end, id: :person_end, :value => Date.new(2019,4,1), min: Date.parse("2018-04-01"), max: Date.parse("2019-04-01") %>
   </div>
 
   <div class="field">

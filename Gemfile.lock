@@ -57,6 +57,7 @@ GEM
       activesupport (>= 3.2.0)
       tzinfo
     byebug (9.0.6)
+    chartkick (2.3.4)
     coderay (1.1.2)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
@@ -268,6 +269,7 @@ DEPENDENCIES
   bootstrap-will_paginate (= 1.0.0)
   business_time
   byebug (= 9.0.6)
+  chartkick
   coffee-rails (= 4.2.2)
   faker (= 1.7.3)
   google-api-client

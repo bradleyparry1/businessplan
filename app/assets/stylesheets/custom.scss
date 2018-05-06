@@ -157,6 +157,10 @@ footer ul li {
   border: solid black 1px;
 }
 
+.details_head_row td{
+  text-align: center;
+}
+
 .people_toolbar_div{
   background-color: #efefef;
   padding:10px 5px 10px 5px;
@@ -196,4 +200,35 @@ footer ul li {
   border-left: solid black 1px;
   border-right: solid black 1px;
   margin-top:10px;
+}
+
+.actual_td{
+  background-color: #c9daf8;
+  text-align: center;
+}
+
+.forecast_td{
+  background-color: #f4cccc;
+  text-align: center;
+}
+
+.baseline_td{
+  background-color: #fce5cd;
+  text-align: center;
+}
+
+.variance_td{
+  text-align: center;
+}
+
+.total_row{
+  border: solid black 1px;
+  background-color: #efefef;
+  font-weight: bold;
+}
+
+.total_row td{
+  border-top: solid black 1px;
+  border-bottom: solid black 1px;
+  text-align: center;
 }

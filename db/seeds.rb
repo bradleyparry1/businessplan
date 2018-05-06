@@ -39,6 +39,7 @@ def authorize
     client_id, SCOPE, token_store)
   user_id = 'default'
   credentials = authorizer.get_credentials(user_id)
+
   if credentials.nil?
     url = authorizer.get_authorization_url(
       base_url: OOB_URI)
@@ -180,7 +181,7 @@ if ENV["professions"] || ENV["all"]
   end
 end
 
-if ENV["status"] || ENV["all"]
+if ENV["accounts"] || ENV["all"]
   Account.delete_all
   Account.reset_pk_sequence
 
@@ -190,10 +191,10 @@ if ENV["status"] || ENV["all"]
   puts 'No data found.' if response.values.empty?
   response.values.each do |row|
     t = Account.new
-    t.code = row[1]
+    t.code = row[1].to_s
     t.name = row[2]
-    t.major = row[3]
-    t.minor = row[4]
+    t.major = row[3].to_s
+    t.minor = row[4].to_s
     t.save
   end
 end
@@ -332,6 +333,17 @@ if ENV["people"] || ENV["all"]
     t.end = row[4] == "" ? Date.parse("2019-04-01") : Date.parse(row[4])
     t.fte = row[5]
     t.brexit = row[6] == "Yes" ? true : false
+    t.created_at = Date.parse("2018-04-01")
+    t.save
+
+    t = BasePerson.new
+    t.name_id = row[1]
+    t.team_id = row[2]
+    t.start = row[3] == "" ? nil : Date.parse(row[3])
+    t.end = row[4] == "" ? Date.parse("2019-04-01") : Date.parse(row[4])
+    t.fte = row[5]
+    t.brexit = row[6] == "Yes" ? true : false
+    t.created_at = Date.parse("2018-04-01")
     t.save
   end
 end
@@ -363,6 +375,28 @@ if ENV["others"] || ENV["all"]
     t.jan = row[15] == nil ? 0.0 : row[15]
     t.feb = row[16] == nil ? 0.0 : row[16]
     t.mar = row[17] == nil ? 0.0 : row[17]
+    t.created_at = Date.parse("2018-04-01")
+    t.save
+
+    t = BaseOther.new
+    t.description = row[1]
+    t.team_id = row[2]
+    t.account_id = row[3]
+    t.supplier = row[4]
+    t.po_number = row[5]
+    t.apr = row[6] == nil ? 0.0 : row[6]
+    t.may = row[7] == nil ? 0.0 : row[7]
+    t.jun = row[8] == nil ? 0.0 : row[8]
+    t.jul = row[9] == nil ? 0.0 : row[9]
+    t.aug = row[10] == nil ? 0.0 : row[10]
+    t.sep = row[11] == nil ? 0.0 : row[11]
+    t.oct = row[12] == nil ? 0.0 : row[12]
+    t.nov = row[13] == nil ? 0.0 : row[13]
+    t.dec = row[14] == nil ? 0.0 : row[14]
+    t.jan = row[15] == nil ? 0.0 : row[15]
+    t.feb = row[16] == nil ? 0.0 : row[16]
+    t.mar = row[17] == nil ? 0.0 : row[17]
+    t.created_at = Date.parse("2018-04-01")
     t.save
   end
 end
@@ -374,16 +408,16 @@ if ENV["actuals"] || ENV["all"]
   range = 'Actuals!A2:AK'
   response = service.get_spreadsheet_values(spreadsheet_id, range)
 
-  months = [9,10,11,0,1,2,3,4,5,6,7,8]
+  months = [8,9,10,11,0,1,2,3,4,5,6,7]
 
   puts 'No data found.' if response.values.empty?
   response.values.each do |row|
     t = Actual.new
-    t.team_id = Team.find_by(cc: row[5]).id unless !Team.find_by(cc: row[5])
-    t.account_id = Account.find_by(code: row[7]).id unless !Account.find_by(code: row[7])
+    t.team_id = Team.find_by(cc: row[5].to_s).id unless !Team.find_by(cc: row[5].to_s)
+    t.account_id = Account.find_by(code: row[7].to_s).id unless !Account.find_by(code: row[7].to_s)
     t.po_number = row[24]
     t.description = row[12]
-    t.amount = row[34]
+    t.amount = row[34].to_f
     t.month = months[Date.parse(row[1]).month]
     t.save
   end

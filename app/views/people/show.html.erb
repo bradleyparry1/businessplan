@@ -1,14 +1,23 @@
 <% per_name = Name.find(@person.name_id).name %>
 <% provide(:title, per_name) %>
 
-<table>
+<table class='main_table'>
+  <tr class='details_head_row'>
+    <td>Full Name</td>
+    <td>Team</td>
+    <td>Start Date</td>
+    <td>End Date</td>
+    <td>FTE</td>
+    <td>Update Type</td>
+    <td>Time Updated</td>
+    <td>Updater</td>
+  </tr>
   <tr class='current_row'>
     <td><%= per_name %></td>
     <td><%= @person.team.name %></td>
-    <td><%= @person.start.to_formatted_s(:long)  %></td>
-    <td><%= @person.end.to_formatted_s(:long) unless !@person.end  %></td>
+    <td><%= @person.start.to_formatted_s(:short)  %></td>
+    <td><%= @person.end.to_formatted_s(:short) unless !@person.end  %></td>
     <td><%= @person.fte %></td>
-    <td><%= @person.brexit %></td>
 
     <% @person.versions.reverse.each do |v| %>
       <% if v.event == "create" %>
@@ -19,17 +28,18 @@
         <td>Updated</td>
         <td><%= v.created_at.to_formatted_s(:long) %></td>
       <% end %>
+      <td><%= User.find(v.whodunnit).name unless !v.whodunnit %></td>
       </tr>
       <% if v.event == "update" %>
         <% nam = Name.find(v.reify.name_id) %>
         <% ver = v.reify%>
-        <tr>
+        <% dif = v.changeset %>
+        <tr style='background-color:#efefef;'>
           <td><%= nam.name %></td>
           <td><%= Team.find(ver.team_id).name %></td>
-          <td><%= ver.start.to_formatted_s(:long)  %></td>
-          <td><%= ver.end.to_formatted_s(:long) unless !ver.end  %></td>
+          <td><%= ver.start.to_formatted_s(:short)  %></td>
+          <td><%= ver.end.to_formatted_s(:short) unless !ver.end  %></td>
           <td><%= ver.fte %></td>
-          <td><%= ver.brexit %></td>
       <% end %>
     <% end %>
   </tr>

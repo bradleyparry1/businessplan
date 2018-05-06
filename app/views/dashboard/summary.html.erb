@@ -1,8 +1,10 @@
 
 <% provide(:title, "Summary") %>
+
 <% @change_ids = Pchange.where(central_approved: false, central_declined: false).pluck(:person_id) %>
 <% @ochange_ids = Ochange.where(central_approved: false, central_declined: false).pluck(:other_id) %>
 <% @inc_ids = Account.where('name LIKE ?', "%INC%").pluck(:id) %>
+
 <div id="table_window">
   <table style='border-top: solid black 1px;border-bottom: solid black 1px; width:3500px;'>
     <tr style='border-bottom: solid black 1px;background-color:#005ea5;color:white;'>
