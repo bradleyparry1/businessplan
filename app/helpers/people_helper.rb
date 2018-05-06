@@ -12,7 +12,7 @@ module PeopleHelper
   end
 
   def get_rate(name,team)
-    if name.charge_rate && name.charge_rate > 0
+    if name.grade.id == 16
       return (name.charge_rate * 253 * 1.2) / 12
     end
     Rate.find_by(group_id: team.group.id, grade_id: name.grade_id).salary / 12

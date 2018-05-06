@@ -16,16 +16,16 @@ class DashboardController < ApplicationController
     @other_acc_ids = Account.where(major: "Other").pluck(:id)
     @income_acc_ids = Account.where(major: "Income").pluck(:id)
 
-    @cs_ids = Name.where(role: 1).pluck(:id)
-    @interim_ids = Name.where(role: 2).pluck(:id)
+    #@cs_ids = Name.where(role: 1).pluck(:id)
+    #@interim_ids = Name.where(role: 2).pluck(:id)
 
     cs_actuals = get_actuals_totals(@actuals.where(account_id: @cs_acc_ids))
     interims_actuals = get_actuals_totals(@actuals.where(account_id: @interims_acc_ids))
     other_actuals = get_actuals_totals(@actuals.where(account_id: @other_acc_ids))
     income_actuals = get_actuals_totals(@actuals.where(account_id: @income_acc_ids))
 
-    cs_forecast = get_people_month_costs(@people.where(name_id: @cs_ids))
-    interims_forecast = get_people_month_costs(@people.where(name_id: @interim_ids))
+    cs_forecast = get_people_month_costs(@people.where(name_type: "CivilServant"))
+    interims_forecast = get_people_month_costs(@people.where(name_type: "Interim"))
     other_forecast = get_other_month_costs(@others.where(account_id: @other_acc_ids))
     income_forecast = get_other_month_costs(@others.where(account_id: @income_acc_ids))
 
@@ -36,8 +36,8 @@ class DashboardController < ApplicationController
 
     @total_row = make_total_row(@cs_row,@interims_row,@other_row,@income_row)
 
-    @cs_baseline = get_people_month_costs(BasePerson.where(name_id: @cs_ids, team_id: team_ids))
-    @interims_baseline = get_people_month_costs(BasePerson.where(name_id: @interim_ids, team_id: team_ids))
+    @cs_baseline = get_people_month_costs(BasePerson.where(name_type: "CivilServant", team_id: team_ids))
+    @interims_baseline = get_people_month_costs(BasePerson.where(name_type: "Interim", team_id: team_ids))
     @other_baseline = get_other_month_costs(BaseOther.where(account_id: @other_acc_ids, team_id: team_ids))
     @income_baseline = get_other_month_costs(BaseOther.where(account_id: @income_acc_ids, team_id: team_ids))
 

@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Interims</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Staff number</th>
+      <th>Job title</th>
+      <th>Role</th>
+      <th>Community</th>
+      <th>Grade</th>
+      <th>Profession</th>
+      <th>Framework</th>
+      <th>Status</th>
+      <th>Charge rate</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @interims.each do |interim| %>
+      <tr>
+        <td><%= interim.name %></td>
+        <td><%= interim.staff_number %></td>
+        <td><%= interim.job_title %></td>
+        <td><%= interim.role_id %></td>
+        <td><%= interim.community_id %></td>
+        <td><%= interim.grade_id %></td>
+        <td><%= interim.profession_id %></td>
+        <td><%= interim.framework_id %></td>
+        <td><%= interim.status_id %></td>
+        <td><%= interim.charge_rate %></td>
+        <td><%= link_to 'Show', interim %></td>
+        <td><%= link_to 'Edit', edit_interim_path(interim) %></td>
+        <td><%= link_to 'Destroy', interim, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Interim', new_interim_path %>

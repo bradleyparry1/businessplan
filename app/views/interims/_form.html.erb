@@ -1,0 +1,67 @@
+<%= form_with(model: interim, local: true) do |form| %>
+  <% if interim.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(interim.errors.count, "error") %> prohibited this interim from being saved:</h2>
+
+      <ul>
+      <% interim.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :interim_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :staff_number %>
+    <%= form.text_field :staff_number, id: :interim_staff_number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :job_title %>
+    <%= form.text_field :job_title, id: :interim_job_title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :role_id %>
+    <%= form.number_field :role_id, id: :interim_role_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :community_id %>
+    <%= form.number_field :community_id, id: :interim_community_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :grade_id %>
+    <%= form.number_field :grade_id, id: :interim_grade_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :profession_id %>
+    <%= form.number_field :profession_id, id: :interim_profession_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :framework_id %>
+    <%= form.number_field :framework_id, id: :interim_framework_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :status_id %>
+    <%= form.number_field :status_id, id: :interim_status_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :charge_rate %>
+    <%= form.text_field :charge_rate, id: :interim_charge_rate %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

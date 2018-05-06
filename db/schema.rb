@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180428202322) do
+ActiveRecord::Schema.define(version: 20180506181312) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "code"
@@ -63,6 +63,21 @@ ActiveRecord::Schema.define(version: 20180428202322) do
     t.boolean "brexit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name_type"
+  end
+
+  create_table "civil_servants", force: :cascade do |t|
+    t.string "name"
+    t.string "staff_number"
+    t.string "job_title"
+    t.integer "role_id"
+    t.integer "community_id"
+    t.integer "grade_id"
+    t.integer "profession_id"
+    t.integer "framework_id"
+    t.integer "status_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "communities", force: :cascade do |t|
@@ -90,7 +105,7 @@ ActiveRecord::Schema.define(version: 20180428202322) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "names", force: :cascade do |t|
+  create_table "interims", force: :cascade do |t|
     t.string "name"
     t.string "staff_number"
     t.string "job_title"
@@ -98,11 +113,11 @@ ActiveRecord::Schema.define(version: 20180428202322) do
     t.integer "community_id"
     t.integer "grade_id"
     t.integer "profession_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "framework_id"
     t.integer "status_id"
     t.float "charge_rate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "ochanges", force: :cascade do |t|
@@ -172,6 +187,7 @@ ActiveRecord::Schema.define(version: 20180428202322) do
     t.integer "user_id"
     t.text "comment"
     t.boolean "central_declined"
+    t.string "name_type"
   end
 
   create_table "people", force: :cascade do |t|
@@ -183,6 +199,7 @@ ActiveRecord::Schema.define(version: 20180428202322) do
     t.boolean "brexit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name_type"
   end
 
   create_table "permissions", force: :cascade do |t|

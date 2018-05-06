@@ -1,7 +1,8 @@
-<% per_name = Name.find(@person.name_id).name %>
+<% per_name = @person.name.name %>
+<% db = @person.name_type == "Interim" ? Interim : CivilServant %>
 <% provide(:title, per_name) %>
 
-<table class='main_table'>
+<table class='main_table' style='margin-bottom:10px;'>
   <tr class='details_head_row'>
     <td>Full Name</td>
     <td>Team</td>
@@ -31,7 +32,7 @@
       <td><%= User.find(v.whodunnit).name unless !v.whodunnit %></td>
       </tr>
       <% if v.event == "update" %>
-        <% nam = Name.find(v.reify.name_id) %>
+        <% nam = db.find(v.reify.name_id) %>
         <% ver = v.reify%>
         <% dif = v.changeset %>
         <tr style='background-color:#efefef;'>

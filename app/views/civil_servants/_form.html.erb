@@ -1,0 +1,62 @@
+<%= form_with(model: civil_servant, local: true) do |form| %>
+  <% if civil_servant.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(civil_servant.errors.count, "error") %> prohibited this civil_servant from being saved:</h2>
+
+      <ul>
+      <% civil_servant.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :civil_servant_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :staff_number %>
+    <%= form.text_field :staff_number, id: :civil_servant_staff_number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :job_title %>
+    <%= form.text_field :job_title, id: :civil_servant_job_title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :role_id %>
+    <%= form.number_field :role_id, id: :civil_servant_role_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :community_id %>
+    <%= form.number_field :community_id, id: :civil_servant_community_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :grade_id %>
+    <%= form.number_field :grade_id, id: :civil_servant_grade_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :profession_id %>
+    <%= form.number_field :profession_id, id: :civil_servant_profession_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :framework_id %>
+    <%= form.number_field :framework_id, id: :civil_servant_framework_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :status_id %>
+    <%= form.number_field :status_id, id: :civil_servant_status_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

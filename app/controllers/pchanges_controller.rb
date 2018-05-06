@@ -17,6 +17,7 @@ class PchangesController < ApplicationController
   def new
     @pchange = Pchange.new
     @pchange.person_id = params[:person_id]
+    @pchange.name_type = params[:name_type]
     @pchange.name_id = params[:name_id]
     @pchange.team_id = params[:team_id]
     @pchange.start = params[:start]
@@ -66,6 +67,7 @@ class PchangesController < ApplicationController
       if @pchange.person_id != nil
         if @pchange.for_deletion == false
           per =  Person.find(@pchange.person_id)
+          per.name_type = @pchange.name_type
           per.name_id = @pchange.name_id
           per.team_id = @pchange.team_id
           per.start = @pchange.start
@@ -79,6 +81,7 @@ class PchangesController < ApplicationController
       else
         per = Person.new
         per.name_id = @pchange.name_id
+        per.name_type = @pchange.name_type
         per.team_id = @pchange.team_id
         per.start = @pchange.start
         per.end = @pchange.end
@@ -107,6 +110,6 @@ class PchangesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def pchange_params
-      params.require(:pchange).permit(:person_id, :name_id, :team_id, :start, :end, :fte, :brexit, :for_deletion, :bmo_approved, :central_approved, :central_declined, :user_id, :comment)
+      params.require(:pchange).permit(:person_id, :name_id, :name_type, :team_id, :start, :end, :fte, :brexit, :for_deletion, :bmo_approved, :central_approved, :central_declined, :user_id, :comment)
     end
 end

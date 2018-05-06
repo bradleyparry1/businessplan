@@ -26,6 +26,7 @@
           <% else %>
               <td><%= link_to 'Edit Requested Change', edit_pchange_path(id: person.id,
                                                                          person_id: person.person_id,
+                                                                         name_type: person.name_type,
                                                                          name_id: person.name_id,
                                                                          team_id: person.team_id,
                                                                          start: person.start,
@@ -36,6 +37,7 @@
           <% else %>
             <td><%= link_to 'Request Change', new_pchange_path(person_id: person.id,
                                                                name_id: person.name_id,
+                                                               name_type: person.name_type,
                                                                team_id: person.team_id,
                                                                start: person.start,
                                                                end: person.end,

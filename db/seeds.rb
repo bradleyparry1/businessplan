@@ -39,34 +39,20 @@ def authorize
     client_id, SCOPE, token_store)
   user_id = 'default'
   credentials = authorizer.get_credentials(user_id)
-<<<<<<< HEAD
 
   if credentials.nil?
     url = authorizer.get_authorization_url(
       base_url: OOB_URI)
-=======
-  #if credentials.nil?
-    #url = authorizer.get_authorization_url(
-      #base_url: OOB_URI)
->>>>>>> 7426b54059b2d5ca235d66140cc8be7431f15f6e
     #puts "Open the following URL in the browser and enter the " +
     #     "resulting code after authorization"
     puts url
     #code = gets
     #code = "4/AACtAxlWR5dskVebdktncNGpTkrz3y9_dGrwc9aZrBhe_VDg-9YLWwU"
-<<<<<<< HEAD
     #code = "4/AABTf3uizJu-dAlz8Cbe9baVk7lHCE_WNzyRCMdabmy7AelWmBZOKu4"
     code = "4/AACORY4IgFEJ_i1caBDq3DvzkcK7WawpIfP3DJwvqUDAvl9X5NSznIU"
     credentials = authorizer.get_and_store_credentials_from_code(
       user_id: user_id, code: code, base_url: OOB_URI)
   end
-=======
-    #code = "4/AACDhEoQK_Gof-Hlbw08ZTDigPZhPy2JAy3TFKUCZ48F_XkLU_mqF1o"
-  code = "4/AACORY4IgFEJ_i1caBDq3DvzkcK7WawpIfP3DJwvqUDAvl9X5NSznIU"
-  credentials = authorizer.get_and_store_credentials_from_code(
-    user_id: user_id, code: code, base_url: OOB_URI)
-  #end
->>>>>>> 7426b54059b2d5ca235d66140cc8be7431f15f6e
   credentials
 end
 
@@ -291,18 +277,54 @@ if ENV["rates"] || ENV["all"]
   end
 end
 
-if ENV["names"] || ENV["all"]
-  Name.delete_all
-  Name.reset_pk_sequence
+if ENV["css"] || ENV["all"]
+  CivilServant.delete_all
+  CivilServant.reset_pk_sequence
 
-  range = 'Names!A2:K'
+  range = 'Civil!A2:J'
   response = service.get_spreadsheet_values(spreadsheet_id, range)
-
 
   puts 'No data found.' if response.values.empty?
   response.values.each do |row|
-    if Name.exists?(id: row[0])
-      t = Name.find(row[0])
+    if CivilServant.exists?(id: row[0])
+      t = CivilServant.find(row[0])
+      t.name = row[1] unless t.name == row[1]
+      t.staff_number = row[2] unless t.staff_number == row[2]
+      t.job_title = row[3] unless t.job_title == row[3]
+      t.role_id = row[4] unless t.role_id == row[4]
+      t.community_id = row[5] unless t.community_id == row[5]
+      t.grade_id = row[6] unless t.grade_id == row[6]
+      t.profession_id = row[7] unless t.profession_id == row[7]
+      t.framework_id = row[8] unless t.framework_id == row[8]
+      t.status_id = row[9] unless t.status_id == row[9]
+      t.save
+    else
+      t = CivilServant.new
+      t.name = row[1]
+      t.staff_number = row[2]
+      t.job_title = row[3]
+      t.role_id = row[4]
+      t.community_id = row[5]
+      t.grade_id = row[6]
+      t.profession_id = row[7]
+      t.framework_id = row[8]
+      t.status_id = row[9]
+      t.save
+    end
+  end
+end
+
+if ENV["interims"] || ENV["all"]
+  Interim.delete_all
+  Interim.reset_pk_sequence
+
+  range = 'Interims!A2:K'
+  response = service.get_spreadsheet_values(spreadsheet_id, range)
+
+  puts 'No data found.' if response.values.empty?
+  response.values.each do |row|
+    if Interim.exists?(id: row[0])
+      t = Interim.find(row[0])
       t.name = row[1] unless t.name == row[1]
       t.staff_number = row[2] unless t.staff_number == row[2]
       t.job_title = row[3] unless t.job_title == row[3]
@@ -315,7 +337,7 @@ if ENV["names"] || ENV["all"]
       t.charge_rate = row[10] unless t.charge_rate == row[10]
       t.save
     else
-      t = Name.new
+      t = Interim.new
       t.name = row[1]
       t.staff_number = row[2]
       t.job_title = row[3]
@@ -335,13 +357,14 @@ if ENV["people"] || ENV["all"]
   Person.delete_all
   Person.reset_pk_sequence
 
-  range = 'People!A2:G'
+  range = 'People!A2:L'
   response = service.get_spreadsheet_values(spreadsheet_id, range)
 
   puts 'No data found.' if response.values.empty?
   response.values.each do |row|
     t = Person.new
     t.name_id = row[1]
+    t.name_type = row[11] == "Interims" ? "Interim" : "CivilServant"
     t.team_id = row[2]
     t.start = row[3] == "" ? nil : Date.parse(row[3])
     t.end = row[4] == "" ? Date.parse("2019-04-01") : Date.parse(row[4])
@@ -352,6 +375,7 @@ if ENV["people"] || ENV["all"]
 
     t = BasePerson.new
     t.name_id = row[1]
+    t.name_type = row[11] == "Interims" ? "Interim" : "CivilServant"
     t.team_id = row[2]
     t.start = row[3] == "" ? nil : Date.parse(row[3])
     t.end = row[4] == "" ? Date.parse("2019-04-01") : Date.parse(row[4])

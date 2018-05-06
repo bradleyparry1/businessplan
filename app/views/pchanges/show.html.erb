@@ -13,7 +13,7 @@
     <% else %>
       <% provide(:title, "Change Request") %>
       <% per = Person.find(@pchange.person_id) %>
-      <% nam = Name.find(@pchange.name_id) %>
+      <% nam = @pchange.name %>
       <tr><td><label>Name</label></td><td><%= nam.name %></td><td><%= nam.name %></td></tr>
     <% end %>
 

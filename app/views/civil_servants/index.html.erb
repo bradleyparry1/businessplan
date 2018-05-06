@@ -1,0 +1,43 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Civil Servants</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Staff number</th>
+      <th>Job title</th>
+      <th>Role</th>
+      <th>Community</th>
+      <th>Grade</th>
+      <th>Profession</th>
+      <th>Framework</th>
+      <th>Status</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @civil_servants.each do |civil_servant| %>
+      <tr>
+        <td><%= civil_servant.name %></td>
+        <td><%= civil_servant.staff_number %></td>
+        <td><%= civil_servant.job_title %></td>
+        <td><%= civil_servant.role_id %></td>
+        <td><%= civil_servant.community_id %></td>
+        <td><%= civil_servant.grade_id %></td>
+        <td><%= civil_servant.profession_id %></td>
+        <td><%= civil_servant.framework_id %></td>
+        <td><%= civil_servant.status_id %></td>
+        <td><%= link_to 'Show', civil_servant %></td>
+        <td><%= link_to 'Edit', edit_civil_servant_path(civil_servant) %></td>
+        <td><%= link_to 'Destroy', civil_servant, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Civil Servant', new_civil_servant_path %>

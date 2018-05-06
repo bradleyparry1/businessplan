@@ -29,11 +29,28 @@
     <tr  style='border: solid black 1px;background-color:#005ea5;color:white;'><td style='width:33%;'>Field</td><td style='width:33%;'>Change Request</td><td style='width:33%;'><%= @pchange.person_id ? 'Original' : ''%></td></tr>
 
     <% if @pchange.person_id == nil %>
-      <tr><td><label>Name</label></td><td><%= form.select(:name_id, Name.all.sort_by{|e| e[:name]}.collect {|a| [a.name, a.id]}) -%></td><td></td></tr>
+      <tr><td><label>Role Type</label></td><td><%= form.select(:name_type, [["Civil Servant","CivilServant"],["Interim","Interim"]], {}, id: "role_select") -%></td><td></td></tr>
+      <tr><td><label>Name</label></td><td><%= form.select(:name_id, CivilServant.all.sort_by{|e| e[:name]}.collect {|a| [a.name, a.id]}, {}, id: "name_select") -%></td><td></td></tr>
+      <script>
+        var interims = <%= raw Interim.all.sort_by{|e| e[:name]}.collect {|a| [a.name, a.id]} %>
+        var cs = <%= raw CivilServant.all.sort_by{|e| e[:name]}.collect {|a| [a.name, a.id]} %>
+        $(function(){
+          $("#role_select").change(function(){
+            $("#name_select").empty();
+            var array = $(this).val() == "Interim" ? interims : cs;
+            array.forEach(function(n){
+              $("#name_select").append("<option value='" + n[1] + "'>" + n[0] + "</option>");
+            });
+          });
+        });
+      </script>
     <% else %>
-      <% per = Person.find(@pchange.person_id) %>
-      <% nam = Name.find(@pchange.name_id) %>
-      <tr><td><label>Name</label></td><td><%= nam.name %></td><td><%= nam.name %></td></tr>
+      <% per = @pchange.person %>
+      <% #nam = @pchange.name %>
+      <%= db = @pchange.name_type == "Interim" ? Interim : CivilServant %>
+      <tr><td><label>Role Type</label></td><td><%= @pchange.name_type %></td><td><%= @pchange.name_type %></td></tr>
+      <tr><td><label>Name</label></td><td><%= db.find(@pchange.name_id).name %></td><td><%= db.find(@pchange.name_id).name %></td></tr>
+      <%= form.hidden_field :name_type, id: :pchange_name_type %>
       <%= form.hidden_field :name_id, id: :pchange_name_id %>
     <% end %>
 

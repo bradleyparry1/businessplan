@@ -8,6 +8,9 @@ one:
   community_id: 1
   grade_id: 1
   profession_id: 1
+  framework_id: 1
+  status_id: 1
+  charge_rate: 1.5
 
 two:
   name: MyString
@@ -17,3 +20,6 @@ two:
   community_id: 1
   grade_id: 1
   profession_id: 1
+  framework_id: 1
+  status_id: 1
+  charge_rate: 1.5

@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @civil_servant.name %>
+</p>
+
+<p>
+  <strong>Staff number:</strong>
+  <%= @civil_servant.staff_number %>
+</p>
+
+<p>
+  <strong>Job title:</strong>
+  <%= @civil_servant.job_title %>
+</p>
+
+<p>
+  <strong>Role:</strong>
+  <%= @civil_servant.role_id %>
+</p>
+
+<p>
+  <strong>Community:</strong>
+  <%= @civil_servant.community_id %>
+</p>
+
+<p>
+  <strong>Grade:</strong>
+  <%= @civil_servant.grade_id %>
+</p>
+
+<p>
+  <strong>Profession:</strong>
+  <%= @civil_servant.profession_id %>
+</p>
+
+<p>
+  <strong>Framework:</strong>
+  <%= @civil_servant.framework_id %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @civil_servant.status_id %>
+</p>
+
+<%= link_to 'Edit', edit_civil_servant_path(@civil_servant) %> |
+<%= link_to 'Back', civil_servants_path %>

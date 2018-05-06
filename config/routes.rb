@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :interims
+  resources :civil_servants
   get 'actuals/view'
 
   resources :ochanges

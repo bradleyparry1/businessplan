@@ -49,7 +49,7 @@ module DashboardHelper
 
     team_changes.each do |c|
       if sandbox && c.for_deletion != true && c.central_approved != true && c.central_declined != true
-        rate = get_rate(Name.find(c.name_id),Team.find(c.team_id))
+        rate = get_rate(c.name,c.team)
         ftes = get_all_fte(c.start,c.end,c.fte)
         all_costs = get_all_costs(rate,ftes,c.fte)
         total += all_costs.inject(0){|sum,x| sum + x }
@@ -58,7 +58,7 @@ module DashboardHelper
 
     people.each do |p|
       if !change_ids.include?(p.id) || !sandbox
-        rate = get_rate(Name.find(p.name_id),Team.find(p.team_id))
+        rate = get_rate(p.name,p.team)
         ftes = get_all_fte(p.start,p.end,p.fte)
         all_costs = get_all_costs(rate,ftes,p.fte)
         total += all_costs.inject(0){|sum,x| sum + x }
