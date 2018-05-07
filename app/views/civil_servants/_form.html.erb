@@ -1,60 +1,50 @@
 <%= form_with(model: civil_servant, local: true) do |form| %>
-  <% if civil_servant.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(civil_servant.errors.count, "error") %> prohibited this civil_servant from being saved:</h2>
+<table style="width:100%;">
+  <tr>
+    <td style="width:50%;"><%= form.label :name %></td>
+    <td><%= form.text_field :name, id: :civil_servant_name %><td>
+  </tr>
 
-      <ul>
-      <% civil_servant.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <tr>
+    <td><%= form.label :staff_number %></td>
+    <td><%= form.text_field :staff_number, id: :civil_servant_staff_number %></td>
+  </tr>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name, id: :civil_servant_name %>
-  </div>
+  <tr>
+    <td><%= form.label :job_title %></td>
+    <td><%= form.text_field :job_title, id: :civil_servant_job_title %></td>
+  </tr>
+<!--
+  <tr>
+    <td><%= form.label :role_id %></td>
+    <td><%= form.number_field :role_id, id: :civil_servant_role_id %></td>
+  </tr>
+-->
+  <tr>
+    <td><%= form.label :community_id %></td>
+    <td><%= form.select(:community_id, Community.all.sort_by{|e| e[:name]}.collect {|a| [a.name, a.id]}) -%></td>
+  </tr>
 
-  <div class="field">
-    <%= form.label :staff_number %>
-    <%= form.text_field :staff_number, id: :civil_servant_staff_number %>
-  </div>
+  <tr>
+    <td><%= form.label :grade_id %></td>
+    <td><%= form.select(:grade_id, Grade.all.collect {|a| [a.name, a.id]}) -%></td>
+  </tr>
 
-  <div class="field">
-    <%= form.label :job_title %>
-    <%= form.text_field :job_title, id: :civil_servant_job_title %>
-  </div>
-
-  <div class="field">
-    <%= form.label :role_id %>
-    <%= form.number_field :role_id, id: :civil_servant_role_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :community_id %>
-    <%= form.number_field :community_id, id: :civil_servant_community_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :grade_id %>
-    <%= form.number_field :grade_id, id: :civil_servant_grade_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :profession_id %>
-    <%= form.number_field :profession_id, id: :civil_servant_profession_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :framework_id %>
-    <%= form.number_field :framework_id, id: :civil_servant_framework_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :status_id %>
-    <%= form.number_field :status_id, id: :civil_servant_status_id %>
-  </div>
+  <tr>
+    <td><%= form.label :profession_id %></td>
+    <td><%= form.select(:profession_id, Profession.all.sort_by{|e| e[:name]}.collect {|a| [a.name, a.id]}) -%></td>
+  </tr>
+<!--
+  <tr>
+    <td><%= form.label :framework_id %></td>
+    <td><%= form.select(:framework_id, Framework.all.collect {|a| [a.name, a.id]}) -%></td>
+  </tr>
+-->
+  <tr>
+    <td><%= form.label :status_id %></td>
+    <td><%= form.select(:status_id, Status.all.collect {|a| [a.name, a.id]}) -%></td>
+  </tr>
+</table>
 
   <div class="actions">
     <%= form.submit %>

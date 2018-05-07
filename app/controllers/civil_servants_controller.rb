@@ -1,5 +1,6 @@
 class CivilServantsController < ApplicationController
   before_action :set_civil_servant, only: [:show, :edit, :update, :destroy]
+  before_action :user_type
 
   # GET /civil_servants
   # GET /civil_servants.json
@@ -28,7 +29,7 @@ class CivilServantsController < ApplicationController
 
     respond_to do |format|
       if @civil_servant.save
-        format.html { redirect_to @civil_servant, notice: 'Civil servant was successfully created.' }
+        format.html { redirect_to "/civil_servants", notice: 'Civil servant was successfully created.' }
         format.json { render :show, status: :created, location: @civil_servant }
       else
         format.html { render :new }
@@ -42,7 +43,7 @@ class CivilServantsController < ApplicationController
   def update
     respond_to do |format|
       if @civil_servant.update(civil_servant_params)
-        format.html { redirect_to @civil_servant, notice: 'Civil servant was successfully updated.' }
+        format.html { redirect_to "/civil_servants", notice: 'Civil servant was successfully updated.' }
         format.json { render :show, status: :ok, location: @civil_servant }
       else
         format.html { render :edit }
@@ -70,5 +71,9 @@ class CivilServantsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def civil_servant_params
       params.require(:civil_servant).permit(:name, :staff_number, :job_title, :role_id, :community_id, :grade_id, :profession_id, :framework_id, :status_id)
+    end
+
+    def user_type
+      redirect_to(root_url) unless current_user.user_type == "Master"
     end
 end

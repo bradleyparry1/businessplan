@@ -55,8 +55,8 @@
     <% end %>
 
     <tr><td><%= form.label :team_id %></td><td><%= form.select(:team_id, Team.all.collect {|a| [a.name, a.id]}) -%></td><td><%= per ? Team.find(per.team_id).name : '' %></td></tr>
-    <tr><td><label>Start Date</label></td><td><%= form.date_field :start, id: :pchange_start, :value => Date.today, min: Date.parse("2018-04-01"), max: Date.parse("2019-04-01") %></td><td><%= per ? per.start : '' %></td></tr>
-    <tr><td><label>End Date</label></td><td><%= form.date_field :end, id: :pchange_end, :value => Date.new(2019,4,1), min: Date.parse("2018-04-01"), max: Date.parse("2019-04-01") %></td><td><%= per ? per.end : '' %></td></tr>
+    <tr><td><label>Start Date</label></td><td><%= form.date_field :start, id: :pchange_start, :value => @pchange.start == nil ? Date.today : @pchange.start, min: Date.parse("2018-04-01"), max: Date.parse("2019-04-01") %></td><td><%= per ? per.start : '' %></td></tr>
+    <tr><td><label>End Date</label></td><td><%= form.date_field :end, id: :pchange_end, :value => @pchange.end == nil ? Date.new(2019,4,1) : @pchange.end, min: Date.parse("2018-04-01"), max: Date.parse("2019-04-01") %></td><td><%= per ? per.end : '' %></td></tr>
     <tr><td><label>FTE</label></td><td><%= form.number_field :fte, id: :pchange_fte, in: 0.0..1.0, step: 0.1 %></td><td><%= per ? per.fte : '' %></td></tr>
     <tr><td><label>Brexit role</label></td><td><%= form.check_box :brexit, id: :pchange_brexit %></td><td><%= per ? per.brexit : '' %></td></tr>
     <tr><td><label>Comment</label></td><td colspan='2'><%= form.text_area :comment, id: :pchange_comment, style: "width:100%;" %></td></tr>

@@ -1,14 +1,13 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Civil Servants</h1>
+<% provide(:title, "Civil Servants") %>
 
-<table>
+<table class='main_table'>
   <thead>
-    <tr>
+    <tr class='details_head_row'>
       <th>Name</th>
       <th>Staff number</th>
       <th>Job title</th>
-      <th>Role</th>
       <th>Community</th>
       <th>Grade</th>
       <th>Profession</th>
@@ -24,15 +23,17 @@
         <td><%= civil_servant.name %></td>
         <td><%= civil_servant.staff_number %></td>
         <td><%= civil_servant.job_title %></td>
-        <td><%= civil_servant.role_id %></td>
-        <td><%= civil_servant.community_id %></td>
-        <td><%= civil_servant.grade_id %></td>
-        <td><%= civil_servant.profession_id %></td>
-        <td><%= civil_servant.framework_id %></td>
-        <td><%= civil_servant.status_id %></td>
-        <td><%= link_to 'Show', civil_servant %></td>
-        <td><%= link_to 'Edit', edit_civil_servant_path(civil_servant) %></td>
-        <td><%= link_to 'Destroy', civil_servant, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= civil_servant.community.name %></td>
+        <td><%= civil_servant.grade.name %></td>
+        <td><%= civil_servant.profession.name %></td>
+        <td><%= civil_servant.framework.name %></td>
+        <td><%= civil_servant.status.name %></td>
+        <td><input type="button" value="Show Details" id="<%= civil_servant.id %>_button" class="show_details"></td>
+      </tr>
+      <tr style="display:none;background-color:#efefef;" id="<%= civil_servant.id %>">
+        <td colspan="9" id="<%= civil_servant.id %>">
+          <%= render 'form', civil_servant: civil_servant %>
+        </td>
       </tr>
     <% end %>
   </tbody>
@@ -41,3 +42,18 @@
 <br>
 
 <%= link_to 'New Civil Servant', new_civil_servant_path %>
+
+<script>
+$(function(){
+  $(".show_details").click(function(){
+    var id = $(this).attr("id").replace("_button","");
+    if($(this).val() == "Show Details"){
+      $("#" + id).show();
+      $(this).val("Hide Details");
+    } else {
+      $("#" + id).hide();
+      $(this).val("Show Details");
+    }
+  });
+});
+</script>
