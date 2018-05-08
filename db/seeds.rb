@@ -1,16 +1,3 @@
-=begin
-User.create!(name: "Bradley Parry", email: "bradley.parry@digital.cabinet-office.gov.uk", password: "testpass", password_confirmation: "testpass", admin: true, activated: true, activated_at: Time.zone.now, user_type: "Master")
-
-5.times do |n|
-  name  = Faker::Name.name
-  email = "example-#{n+1}@railstutorial.org"
-  password = "password"
-  User.create!(name:  name,
-               email: email,
-               password:              password,
-               password_confirmation: password)
-end
-=end
 require 'google/apis/sheets_v4'
 require 'googleauth'
 require 'googleauth/stores/file_token_store'

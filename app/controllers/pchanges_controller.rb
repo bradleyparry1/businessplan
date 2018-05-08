@@ -30,6 +30,12 @@ class PchangesController < ApplicationController
   # GET /pchanges/1/edit
   def edit
     session[:return_to] ||= request.referer
+    if @pchange.central_approved || @pchange.central_declined
+      respond_to do |format|
+        format.html { redirect_to @pchange, notice: 'You cannot edit an approved or declined change.' }
+        format.json { render :show, status: :created, location: @pchange }
+      end
+    end
     if ["BMA","BOM"].include?(current_user.user_type)
       @pchange.user_id = current_user.id
     end
